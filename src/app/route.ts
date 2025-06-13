@@ -8,6 +8,10 @@ export const ROUTES:Routes = [
   {
     path:'form-controls',
     loadComponent : ()=> import ('./form-controls/form-controls.component').then((x)=>x.FormControlsComponent)
+  },
+  {
+    path:'modular-form-controls',
+    loadComponent : ()=> import ('./modular-form-controls/modular-form-controls.component').then((x)=>x.ModularFormControlsComponent)
   }
 ]
 
