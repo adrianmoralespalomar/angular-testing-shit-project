@@ -1,0 +1,28 @@
+<div class="input-wrapper">
+  <label>
+    {{ this.label }} <span *ngIf="isRequired" class="required-star">*</span>
+  </label>
+
+  <input
+    (blur)="onTouched()"
+    (input)="onInput($event)"
+    [attr.placeholder]="control?.value || ''"
+    [attr.maxLength]="maxlength"
+    [disabled]="isFormBound ? isDisabled : externalDisabled"
+    [ngClass]="{ 'error': showError, 'readonly': isReadonly, 'disabled': isFormBound ? isDisabled : externalDisabled }"
+    [readonly]="isReadonly"
+    [value]="isFormBound ? value : externalValue"
+    autocomplete="off"
+    type="text"
+  />
+
+  <div *ngIf="isFormBound && (showError || (showCharCount && maxlength))" class="input-extra-data">
+    <div *ngIf="showError" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="showCharCount && maxlength" class="char-counter">
+      {{ currentLength }} / {{ maxlength }}
+    </div>
+  </div>
+</div>

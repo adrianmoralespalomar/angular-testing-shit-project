@@ -1,0 +1,27 @@
+<div class="input-wrapper">
+  <label>
+    {{ this.label }} <span *ngIf="isRequired" class="required-star">*</span>
+  </label>
+
+  <input
+  [formControl]="ngxMaskControl"
+    (blur)="onTouched()"
+    (input)="onInput($event)"
+    [attr.placeholder]="control?.value || ''"
+    [attr.max]="this.getMaxvalue()"
+    [attr.min]="this.getMaxvalue()"
+    [mask]="(this.typeNumber === 'amount' ? 'separator.' : 'percent.') + this.maxdecimals"
+    [thousandSeparator]="'.'"
+    [decimalMarker]="','"
+    [ngClass]="{ 'error': showError, 'readonly': isReadonly, 'disabled': isFormBound ? isDisabled : externalDisabled }"
+    [readonly]="isReadonly"
+    autocomplete="off"
+    type="text"
+  />
+
+  <div *ngIf="isFormBound && showError" class="input-extra-data">
+    <div *ngIf="showError" clas22s="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

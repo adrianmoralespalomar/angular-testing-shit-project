@@ -1,0 +1,47 @@
+div.list-dragdrop {
+  overflow-x:auto;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #FFFFFF;
+    tr {
+      height: auto;
+    }
+    thead tr th, tbody tr td:not(.cdk-column-expandedDetail){
+      padding:0.5rem;
+      border-bottom: 0.0625rem solid #CEDEE7;
+      white-space: nowrap;
+      height: auto;
+    }
+    thead tr th span {
+      display: flex;
+      gap:0.25rem;
+      align-items: center;
+    }
+  }
+
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .mat-mdc-cell {
+    border-bottom-color: inherit;
+    border-bottom-width: inherit; 
+    border-bottom-style: inherit; 
+    letter-spacing: inherit; 
+    line-height: inherit;
+  }
+}

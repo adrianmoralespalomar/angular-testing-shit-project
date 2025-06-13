@@ -1,0 +1,18 @@
+main#form-controls-section{
+  padding:2rem;
+  display: flex;
+  gap:1rem;
+  flex-direction: column;
+}
+
+main#form-controls-section section{
+  padding:2rem;
+  display: flex;
+  gap:1rem;
+  flex-direction: column;
+  & form{
+    display: flex;
+    gap:1rem;
+    flex-direction: column;
+  }
+}

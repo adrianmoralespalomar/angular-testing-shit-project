@@ -1,0 +1,40 @@
+<main id="form-controls-section">
+  <mat-accordion multi>
+    <mat-expansion-panel id="input-text-section">
+      <mat-expansion-panel-header><mat-panel-title> Input Text </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formText" [formGroup]="formText">
+          <app-input-text formControlName="name" [label]="'Nombre'" [placeholder]="'Introduce tu nombre'" [maxlength]="10" [showCharCount]="true" />
+          <app-input-text formControlName="nameDisabled" [label]="'Nombre Disabled'" [placeholder]="'Introduce tu nombre Disabled'" [maxlength]="10" />
+          <app-input-text formControlName="nameReadonly" [label]="'Nombre Readonly'" [placeholder]="'Introduce tu nombre Readonly'" [isReadonly]="true" [maxlength]="10" />
+          <app-input-text formControlName="email" [label]="'Email'" [placeholder]="'Introduce tu mail'" [maxlength]="100" />
+        </form>
+      </section>
+
+      <section id="no-form-controls">
+        <app-input-text [label]="'Nombre no Form Disabled'" [placeholder]="'Nombre no Form'" [maxlength]="10" [externalDisabled]="true" [externalValue]="'Valor por Defecto'" />
+        <app-input-text [label]="'Nombre no Form Readonly'" [placeholder]="'Nombre no Form'" [maxlength]="10" [isReadonly]="true" [externalValue]="'Valor por Defecto'" />
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="input-number-section">
+      <mat-expansion-panel-header><mat-panel-title> Input Number </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formNumber" [formGroup]="formNumber">
+          <app-input-number formControlName="number" [label]="'Numero'" />
+          <app-input-number formControlName="numberMax" [label]="'Numero max 120'" />
+          <app-input-number formControlName="numberMin" [label]="'Numero min 10'" />
+          <app-input-number formControlName="numberWith2Decimals" [label]="'Numero With 2 Decimals'" [maxdecimals]="2" />
+          <app-input-number formControlName="numberDisabled" [label]="'Numero Disabled'" />
+          <app-input-number formControlName="numberReadonly" [label]="'Numero Readonly'" [isReadonly]="true" />
+        </form>
+        <pre>{{this.formNumber?.getRawValue() | json}}</pre>
+      </section>
+
+      <section id="no-form-controls">
+        <app-input-number [label]="'Numero no Form Disabled'" [placeholder]="'Numero no Form Disabled'" [externalDisabled]="true" [externalValue]="33.3333" [maxdecimals]="4" />
+        <app-input-number [label]="'Numero no Form Readonly'" [placeholder]="'Numero no Form Readonly'" [externalDisabled]="true" [externalValue]="11.4" [maxdecimals]="1" [isReadonly]="true" />
+      </section>
+    </mat-expansion-panel>
+  </mat-accordion>
+</main>
