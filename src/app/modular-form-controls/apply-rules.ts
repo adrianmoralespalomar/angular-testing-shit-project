@@ -3,7 +3,6 @@ import { FieldRuleSet } from "./rule-engine.types";
 
 export function applyRules(form: FormGroup, rules: FieldRuleSet): void {
   const values = form.getRawValue(); // Incluye deshabilitados
-  console.log('juuu')
   Object.entries(rules).forEach(([key, rule]) => {
     const control = form.get(key);
     if (!control) return;

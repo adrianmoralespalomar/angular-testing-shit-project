@@ -7,7 +7,7 @@
     (blur)="onTouched()"
     (input)="onInput($event)"
     [attr.placeholder]="control?.value || ''"
-    [attr.maxLength]="this.getMaxLength()"
+    [attr.maxLength]="this.allowTypeInvalidValue ? null :this.getMaxLength()"
     [disabled]="isFormBound ? isDisabled : externalDisabled"
     [ngClass]="{ 'error': showError, 'readonly': isReadonly, 'disabled': isFormBound ? isDisabled : externalDisabled }"
     [readonly]="isReadonly"

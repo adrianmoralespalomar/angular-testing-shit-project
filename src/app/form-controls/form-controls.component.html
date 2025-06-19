@@ -30,6 +30,7 @@
           <app-input-number formControlName="numberWith2DecimalsNoInput" [label]="'Numero With 2 Decimals no [maxdecimals] input'" [maxdecimals]="2" />
           <app-input-number formControlName="numberDisabled" [label]="'Numero Disabled'" />
           <app-input-number formControlName="numberReadonly" [label]="'Numero Readonly'" [isReadonly]="true" />
+          <app-input-number formControlName="percentage" [label]="'Porcentage'" [typeNumber]="'percentage'"  />
         </form>
         <pre>{{this.formNumber?.getRawValue() | json}}</pre>
       </section>
@@ -37,6 +38,30 @@
       <section id="no-form-controls">
         <app-input-number [label]="'Numero no Form Disabled'" [placeholder]="'Numero no Form Disabled'" [externalDisabled]="true" [externalValue]="33.3333" [maxdecimals]="4" />
         <app-input-number [label]="'Numero no Form Readonly'" [placeholder]="'Numero no Form Readonly'" [externalDisabled]="true" [externalValue]="11.4" [maxdecimals]="1" [isReadonly]="true" />
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="raddio-button-section">
+      <mat-expansion-panel-header><mat-panel-title> Raddio Button </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formRaddioButton" [formGroup]="formRaddioButton">
+          <app-radio-button formControlName="genre" [label]="'Genres'" [options]="this.genres" />
+          <app-radio-button formControlName="genreRequired" [label]="'Genres Required'" [options]="this.genres" />
+          <app-radio-button formControlName="genreDisabled" [label]="'Genres Disabled '" [options]="this.genres" />
+        </form>
+        <pre>{{this.formRaddioButton?.getRawValue() | json}}</pre>
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="checkbox-section">
+      <mat-expansion-panel-header><mat-panel-title> Checkbox </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formCheckBox" [formGroup]="formCheckBox">
+          <app-checkbox formControlName="isSpanish" [label]="'Is Spanish?'" />
+          <app-checkbox formControlName="isSpanishRequired" [label]="'Is Spanish Required?'" />
+          <app-checkbox formControlName="isSpanishDisabled" [label]="'Is Spanish Disabled?'" />
+        </form>
+        <pre>{{this.formCheckBox?.getRawValue() | json}}</pre>
       </section>
     </mat-expansion-panel>
   </mat-accordion>

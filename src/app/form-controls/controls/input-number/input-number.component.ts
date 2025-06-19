@@ -1,14 +1,12 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, Input, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-input-number',
   standalone: true,
-  imports: [ ReactiveFormsModule,NgIf, NgClass, MatFormFieldModule, MatInputModule,NgxMaskDirective],
+  imports: [ ReactiveFormsModule,NgIf, NgClass,NgxMaskDirective],
   providers: [provideNgxMask()],
   templateUrl: './input-number.component.html',
   styleUrls: ['../input.css']
@@ -16,8 +14,9 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 export class InputNumberComponent implements ControlValueAccessor {
   @Input() label?: string;
   @Input() placeholder: string = '';
-  @Input() maxdecimals: number = 0;
+  @Input() maxdecimals?: number;
   @Input() typeNumber : 'amount' | 'percentage' = 'amount';
+  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrec 
  
   // ✅ Inputs para uso fuera del formulario
   @Input() externalValue: number | null = null;
@@ -86,6 +85,20 @@ export class InputNumberComponent implements ControlValueAccessor {
     const result = validator({ value: testValue } as any);
     if (result && typeof result === 'object' && 'min' in result) {
       return result['min'].min;
+    }
+    return undefined;
+  }
+
+  getMaxDecimals(): number | undefined{
+    //Si le pasamos directamente el maxlength, entonces lo seteamos
+    if(this.maxdecimals) return this.maxdecimals;
+    //Sino, leeremos desde el Validators.minLength del FormControl
+    const validator = this.control?.validator;
+    if (!validator) return undefined;
+    // Creamos un control ficticio con un valor muy alto que siempre va a fallar si hay un max
+    const result = validator({ value: 'x'.repeat(9999999) } as any);
+    if (result && typeof result === 'object' && 'maxDecimals' in result) {
+      return result['maxDecimals'].requiredDecimals;
     }
     return undefined;
   }

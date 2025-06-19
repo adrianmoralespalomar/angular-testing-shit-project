@@ -10,7 +10,7 @@ export const CLIENTE_RULES: FieldRuleSet = {
   nombre: {
     openapiProp: 'name',                 // ← por si mapeas al backend
     showIf: (values) => values['edad'] > 29,
-    requiredIf: (values) => values['edad'] > 29,
+    requiredIf: (values) => values['edad'] > 34,
     validators: [Validators.minLength(2)]
   },
 

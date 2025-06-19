@@ -1,0 +1,31 @@
+<div class="radio-button-wrapper" [ngClass]="orientation">
+  <!-- Etiqueta -->
+  <span  *ngIf="label">
+    {{ label }}
+    <span *ngIf="isRequired" class="required">*</span>
+  </span >
+
+  <!-- Grupo de radios (modo edición) -->
+  <section class="options-section">
+    <label
+      *ngFor="let opt of options"
+      class="radio-option"
+      [ngClass]="{
+        disabled: isDisabled || externalDisabled,
+        checked: value === opt.value
+      }"
+    >
+      <input
+        type="radio"
+        [value]="opt.value"
+        [checked]="value === opt.value"
+        (change)="onSelectionChange(opt.value)"
+        [disabled]="isDisabled || externalDisabled"
+      />
+      <span>{{ opt.label }}</span>
+    </label>
+  </section>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="showError" class="error-message">{{ errorMessage }}</div>
+</div>

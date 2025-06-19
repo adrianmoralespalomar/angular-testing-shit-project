@@ -8,12 +8,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { CheckboxComponent } from './controls/checkbox/checkbox.component';
 import { InputNumberComponent } from './controls/input-number/input-number.component';
 import { InputTextComponent } from './controls/input-text/input-text.component';
+import { RadioButtonComponent, RadioButtonOptions } from './controls/radio-button/radio-button.component';
 
 @Component({
   selector: 'app-form-controls',
-  imports: [ MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule,FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,InputTextComponent,InputNumberComponent, MatExpansionModule],
+  imports: [ MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule,FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,InputTextComponent,InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent],
   standalone:true,
   templateUrl: './form-controls.component.html',
   styleUrls: ['./form-controls.component.css']
@@ -22,10 +24,14 @@ export class FormControlsComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   protected formText : FormGroup | undefined = undefined;
   protected formNumber : FormGroup | undefined = undefined;
-
+  protected formRaddioButton : FormGroup | undefined = undefined;
+  protected genres : RadioButtonOptions [] = [{label:'Man',value:1},{label:'Woman',value:2}];
+  protected formCheckBox : FormGroup | undefined = undefined;
   ngOnInit() {
     this.setInitialFormText();
     this.setInitialFormNumber();
+    this.setInitialFormRaddioButton();
+    this.setInitialFormCheckBox();
   }
 
   setInitialFormText(){
@@ -48,6 +54,23 @@ export class FormControlsComponent implements OnInit {
       numberWith2DecimalsNoInput: this._formBuilder.nonNullable.control(12.23, [Validators.required, Validators.min(10), maxDecimalsValidator(2)]),
       numberDisabled: this._formBuilder.control({value:39, disabled:true}),
       numberReadonly: this._formBuilder.control({value:69, disabled:true}),
+      percentage: this._formBuilder.control(3, maxDecimalsValidator(2)),
+    });
+  }
+
+  setInitialFormRaddioButton(){
+    this.formRaddioButton = this._formBuilder.group({
+      genre: this._formBuilder.control(null),
+      genreRequired: this._formBuilder.control(null, [Validators.required]),
+      genreDisabled: [{value:1, disabled:true}, [Validators.required]],
+    });
+  }
+  
+  setInitialFormCheckBox(){
+    this.formCheckBox = this._formBuilder.group({
+      isSpanish: this._formBuilder.control(null),
+      isSpanishRequired: this._formBuilder.control(null, [Validators.required]),
+      isSpanishDisabled: [{value:true, disabled:true}, [Validators.required]],
     });
   }
 
@@ -95,4 +118,5 @@ interface FormNumber{
   numberWith2DecimalsNoInput:FormControl<number>;
   numberDisabled:FormControl<number | null>;
   numberReadonly:FormControl<number | null>;
+  percentage:FormControl<number | null>;
 }

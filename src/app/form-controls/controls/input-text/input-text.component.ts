@@ -16,7 +16,7 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() maxlength?: number;
   @Input() showCharCount = false;
-  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrectos
+  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrec 
 
   // ✅ Inputs para uso fuera del formulario
   @Input() externalValue: string = '';
@@ -59,7 +59,6 @@ export class InputTextComponent implements ControlValueAccessor {
   }
 
   getMaxLength():number | undefined{
-    if(this.allowTypeInvalidValue) return;
     //Si le pasamos directamente el maxlength, entonces lo seteamos
     if(this.maxlength) return this.maxlength;
     //Sino, leeremos desde el Validators.minLength del FormControl
@@ -77,7 +76,7 @@ export class InputTextComponent implements ControlValueAccessor {
     const errors = this.control?.errors;
     if (!errors) return null;
     if (errors['required']) return 'Este campo es obligatorio';
-    if (errors['maxlength']) return 'Longitud máxima superada';
+    if (errors['maxlength']) return `Longitud máxima debe ser menor o igual a ${this.getMaxLength()}`;
     //if (errors['invalidEmail']) return errors['invalidEmail'].message ?? 'Email inválido';
     for (const key in errors) { //Devuelve el primer error custom
       const err = errors[key];
