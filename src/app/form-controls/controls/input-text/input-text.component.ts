@@ -16,6 +16,7 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() maxlength?: number;
   @Input() showCharCount = false;
+  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrectos
 
   // ✅ Inputs para uso fuera del formulario
   @Input() externalValue: string = '';
@@ -55,6 +56,21 @@ export class InputTextComponent implements ControlValueAccessor {
 
   get showError(): boolean | undefined{
     return this.control?.invalid && (this.control.touched || this.control.dirty) || false;
+  }
+
+  getMaxLength():number | undefined{
+    if(this.allowTypeInvalidValue) return;
+    //Si le pasamos directamente el maxlength, entonces lo seteamos
+    if(this.maxlength) return this.maxlength;
+    //Sino, leeremos desde el Validators.minLength del FormControl
+    const validator = this.control?.validator;
+    if (!validator) return undefined;
+    // Creamos un control ficticio con un valor muy alto que siempre va a fallar si hay un max
+    const result = validator({ value: 'x'.repeat(9999999) } as any);
+    if (result && typeof result === 'object' && 'maxlength' in result) {
+      return result['maxlength'].requiredLength;
+    }
+    return undefined;
   }
 
   get errorMessage(): string | null {

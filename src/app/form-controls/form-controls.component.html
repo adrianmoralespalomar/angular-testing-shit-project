@@ -4,9 +4,11 @@
       <mat-expansion-panel-header><mat-panel-title> Input Text </mat-panel-title></mat-expansion-panel-header>
       <section id="form-controls">
         <form *ngIf="formText" [formGroup]="formText">
-          <app-input-text formControlName="name" [label]="'Nombre'" [placeholder]="'Introduce tu nombre'" [maxlength]="10" [showCharCount]="true" />
-          <app-input-text formControlName="nameDisabled" [label]="'Nombre Disabled'" [placeholder]="'Introduce tu nombre Disabled'" [maxlength]="10" />
-          <app-input-text formControlName="nameReadonly" [label]="'Nombre Readonly'" [placeholder]="'Introduce tu nombre Readonly'" [isReadonly]="true" [maxlength]="10" />
+          <app-input-text formControlName="name" [label]="'Nombre max 10 no [maxlength] input'" [placeholder]="'Introduce tu nombre'" [showCharCount]="true" />
+          <app-input-text formControlName="nameTwo" [label]="'Nombre max 10 with [maxlength] input'" [placeholder]="'Introduce tu nombre'" [maxlength]="10" [showCharCount]="true" />
+          <app-input-text formControlName="nameAllowInvalid" [label]="'Nombre max 10 no [maxlength] input but Allow Invalid values'" [placeholder]="'Introduce tu nombre'" [showCharCount]="true" [allowTypeInvalidValue]="true" />
+          <app-input-text formControlName="nameDisabled" [label]="'Nombre Disabled max 10'" [placeholder]="'Introduce tu nombre Disabled'" [maxlength]="10" />
+          <app-input-text formControlName="nameReadonly" [label]="'Nombre Readonly max 10'" [placeholder]="'Introduce tu nombre Readonly'" [isReadonly]="true" [maxlength]="10" />
           <app-input-text formControlName="email" [label]="'Email'" [placeholder]="'Introduce tu mail'" [maxlength]="100" />
         </form>
       </section>
@@ -24,7 +26,8 @@
           <app-input-number formControlName="number" [label]="'Numero'" />
           <app-input-number formControlName="numberMax" [label]="'Numero max 120'" />
           <app-input-number formControlName="numberMin" [label]="'Numero min 10'" />
-          <app-input-number formControlName="numberWith2Decimals" [label]="'Numero With 2 Decimals'" [maxdecimals]="2" />
+          <app-input-number formControlName="numberWith2Decimals" [label]="'Numero With 2 Decimals with [maxdecimals] input'" [maxdecimals]="2" />
+          <app-input-number formControlName="numberWith2DecimalsNoInput" [label]="'Numero With 2 Decimals no [maxdecimals] input'" [maxdecimals]="2" />
           <app-input-number formControlName="numberDisabled" [label]="'Numero Disabled'" />
           <app-input-number formControlName="numberReadonly" [label]="'Numero Readonly'" [isReadonly]="true" />
         </form>

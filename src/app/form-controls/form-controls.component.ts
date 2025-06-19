@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -30,7 +30,9 @@ export class FormControlsComponent implements OnInit {
 
   setInitialFormText(){
     this.formText = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(10)]],
+      name: this._formBuilder.control('',[Validators.required, Validators.maxLength(10)]),
+      nameTwo: this._formBuilder.control('',[Validators.required]),
+      nameAllowInvalid: this._formBuilder.control('',[Validators.required, Validators.maxLength(10)]),
       nameDisabled: [{value:'Nombre Disabled', disabled:true}, [Validators.required, Validators.maxLength(10)]],
       nameReadonly: [{value:'Nombre Readonly', disabled:true}, [Validators.required, Validators.maxLength(10)]],
       email: ['', [Validators.required, customEmailValidator]],
@@ -43,6 +45,7 @@ export class FormControlsComponent implements OnInit {
       numberMax: this._formBuilder.nonNullable.control(2, [Validators.required, Validators.max(120)]),
       numberMin: this._formBuilder.nonNullable.control(1, [Validators.required, Validators.min(10)]),
       numberWith2Decimals: this._formBuilder.nonNullable.control(12.23, [Validators.required, Validators.min(10)]),
+      numberWith2DecimalsNoInput: this._formBuilder.nonNullable.control(12.23, [Validators.required, Validators.min(10), maxDecimalsValidator(2)]),
       numberDisabled: this._formBuilder.control({value:39, disabled:true}),
       numberReadonly: this._formBuilder.control({value:69, disabled:true}),
     });
@@ -60,11 +63,36 @@ function customEmailValidator(control: AbstractControl): ValidationErrors | null
   return null;
 }
 
+export function maxDecimalsValidator(maxDecimals: number): ValidatorFn  {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (value == null || value === '') return null;
+    if (isNaN(value)) return { maxDecimals: { requiredDecimals: maxDecimals, actual: value } };
+
+    const strValue = value.toString();
+    const decimalPart = strValue.split('.')[1];
+
+    if (decimalPart && decimalPart.length > maxDecimals) {
+      return {
+        maxDecimals: {
+          requiredDecimals: maxDecimals,
+          actualDecimals: decimalPart.length,
+          message: `Máximo ${maxDecimals} decimales permitidos`
+        }
+      };
+    }
+
+    return null;
+  };
+}
+
 interface FormNumber{
   number:FormControl<number | null>;
   numberMax:FormControl<number>;
   numberMin:FormControl<number>;
   numberWith2Decimals:FormControl<number>;
+  numberWith2DecimalsNoInput:FormControl<number>;
   numberDisabled:FormControl<number | null>;
   numberReadonly:FormControl<number | null>;
 }

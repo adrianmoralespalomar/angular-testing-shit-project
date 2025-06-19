@@ -7,7 +7,7 @@
     (blur)="onTouched()"
     (input)="onInput($event)"
     [attr.placeholder]="control?.value || ''"
-    [attr.maxLength]="maxlength"
+    [attr.maxLength]="this.getMaxLength()"
     [disabled]="isFormBound ? isDisabled : externalDisabled"
     [ngClass]="{ 'error': showError, 'readonly': isReadonly, 'disabled': isFormBound ? isDisabled : externalDisabled }"
     [readonly]="isReadonly"
@@ -16,13 +16,13 @@
     type="text"
   />
 
-  <div *ngIf="isFormBound && (showError || (showCharCount && maxlength))" class="input-extra-data">
+  <div *ngIf="isFormBound && (showError || (showCharCount && this.getMaxLength()))" class="input-extra-data">
     <div *ngIf="showError" class="error-message">
       {{ errorMessage }}
     </div>
   
-    <div *ngIf="showCharCount && maxlength" class="char-counter">
-      {{ currentLength }} / {{ maxlength }}
+    <div *ngIf="showCharCount && this.getMaxLength()" class="char-counter">
+      {{ currentLength }} / {{ this.getMaxLength() }}
     </div>
   </div>
 </div>
