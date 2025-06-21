@@ -1,0 +1,41 @@
+<div class="input-wrapper">
+  <label *ngIf="label">
+    {{ label }} <span *ngIf="isRequired" class="required">*</span>
+  </label>
+
+  <ng-container [ngSwitch]="type">
+    <!-- Fecha única -->
+    <input
+      *ngSwitchCase="'single'"
+      type="date"
+      [value]="this.getDateFormat(value, false)"
+      (change)="onSingleDateChange($event)"
+      [readonly]="isReadonly"
+      [disabled]="isDisabled || externalDisabled"
+    />
+
+    <!-- Rango de fechas -->
+    <div *ngSwitchCase="'range'" class="range-wrapper">
+      <input
+        type="date"
+        [value]="value?.from ? (value.from | date:'yyyy-MM-dd') : ''"
+        (change)="onFromDateChange($event)"
+        [readonly]="isReadonly"
+        [disabled]="isDisabled || externalDisabled"
+      />
+      <span class="range-separator">→</span>
+      <input
+        type="date"
+        [value]="value?.to ? (value.to | date:'yyyy-MM-dd') : ''"
+        (change)="onToDateChange($event)"
+        [readonly]="isReadonly"
+        [disabled]="isDisabled || externalDisabled"
+      />
+    </div>
+  </ng-container>
+  <div *ngIf="isFormBound && showError" class="input-extra-data">
+    <div *ngIf="showError" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

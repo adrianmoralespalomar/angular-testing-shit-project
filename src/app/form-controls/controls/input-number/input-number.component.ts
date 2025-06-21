@@ -2,6 +2,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { Component, Input, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { getErrorMessage, getMaxDecimals, getMaxvalue, getMinvalue } from '../shared-functions';
 
 @Component({
   selector: 'app-input-number',
@@ -66,57 +67,19 @@ export class InputNumberComponent implements ControlValueAccessor {
   }
 
   getMaxvalue(): number | undefined{
-    const validator = this.control?.validator;
-    if (!validator) return undefined;
-    // Creamos un control ficticio con un valor muy alto que siempre va a fallar si hay un max
-    const testValue = 999999999;
-    const result = validator({ value: testValue } as any);
-    if (result && typeof result === 'object' && 'max' in result) {
-      return result['max'].max;
-    }
-    return undefined;
+    return getMaxvalue(this.control);
   }
 
   getMinvalue(): number | undefined{
-    const validator = this.control?.validator;
-    if (!validator) return undefined;
-    // Creamos un control ficticio con un valor muy alto que siempre va a fallar si hay un max
-    const testValue = -999999999;
-    const result = validator({ value: testValue } as any);
-    if (result && typeof result === 'object' && 'min' in result) {
-      return result['min'].min;
-    }
-    return undefined;
+    return getMinvalue(this.control);
   }
 
   getMaxDecimals(): number | undefined{
-    //Si le pasamos directamente el maxlength, entonces lo seteamos
-    if(this.maxdecimals) return this.maxdecimals;
-    //Sino, leeremos desde el Validators.minLength del FormControl
-    const validator = this.control?.validator;
-    if (!validator) return undefined;
-    // Creamos un control ficticio con un valor muy alto que siempre va a fallar si hay un max
-    const result = validator({ value: 'x'.repeat(9999999) } as any);
-    if (result && typeof result === 'object' && 'maxDecimals' in result) {
-      return result['maxDecimals'].requiredDecimals;
-    }
-    return undefined;
+    return getMaxDecimals(this.control, this.maxdecimals);
   }
 
   get errorMessage(): string | null {
-    const errors = this.control?.errors;
-    if (!errors) return null;
-    if (errors['required']) return 'Este campo es obligatorio';
-    if (errors['maxlength']) return 'Longitud máxima superada';
-    if (errors['max']) return `Valor debe ser menor o igual a ${this.getMaxvalue()}`;
-    if (errors['min']) return `Valor debe ser mayor o igual a ${this.getMinvalue()}`;
-    for (const key in errors) { //Devuelve el primer error custom
-      const err = errors[key];
-      if (typeof err === 'object' && 'message' in err) {
-        return err.message;
-      }
-    }
-    return 'Campo inválido';
+    return getErrorMessage(this.control);
   }
 
   writeValue(value: any): void {

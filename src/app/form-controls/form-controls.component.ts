@@ -9,13 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { CheckboxComponent } from './controls/checkbox/checkbox.component';
+import { InputDateComponent } from './controls/input-date/input-date.component';
 import { InputNumberComponent } from './controls/input-number/input-number.component';
 import { InputTextComponent } from './controls/input-text/input-text.component';
 import { RadioButtonComponent, RadioButtonOptions } from './controls/radio-button/radio-button.component';
+import { TextareaComponent } from './controls/textarea/textarea.component';
 
 @Component({
   selector: 'app-form-controls',
-  imports: [ MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule,FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,InputTextComponent,InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent],
+  imports: [ MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule,FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,InputTextComponent,InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent, InputDateComponent, TextareaComponent],
   standalone:true,
   templateUrl: './form-controls.component.html',
   styleUrls: ['./form-controls.component.css']
@@ -27,11 +29,16 @@ export class FormControlsComponent implements OnInit {
   protected formRaddioButton : FormGroup | undefined = undefined;
   protected genres : RadioButtonOptions [] = [{label:'Man',value:1},{label:'Woman',value:2}];
   protected formCheckBox : FormGroup | undefined = undefined;
+  protected formDate : FormGroup | undefined = undefined;
+  protected formTextarea : FormGroup | undefined = undefined;
+
   ngOnInit() {
     this.setInitialFormText();
     this.setInitialFormNumber();
     this.setInitialFormRaddioButton();
     this.setInitialFormCheckBox();
+    this.setInitialFormDate();
+    this.setInitialFormTextarea();
   }
 
   setInitialFormText(){
@@ -71,6 +78,23 @@ export class FormControlsComponent implements OnInit {
       isSpanish: this._formBuilder.control(null),
       isSpanishRequired: this._formBuilder.control(null, [Validators.required]),
       isSpanishDisabled: [{value:true, disabled:true}, [Validators.required]],
+    });
+  }
+  
+  setInitialFormDate(){
+    this.formDate = this._formBuilder.group({
+      bd: this._formBuilder.control(null),
+      bdRequired: this._formBuilder.control(null, [Validators.required]),
+      bdDisabled: [{value:null, disabled:true}, [Validators.required]],
+      bdRange: this._formBuilder.control(null),
+    });
+  }
+  
+  setInitialFormTextarea (){
+    this.formTextarea = this._formBuilder.group({
+      random: this._formBuilder.control(null),
+      randomRequired: this._formBuilder.control(null, [Validators.required]),
+      randomDisabled: [{value:null, disabled:true}, [Validators.required]]
     });
   }
 

@@ -4,13 +4,13 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { getErrorMessage, getMaxLength } from '../shared-functions';
 
 @Component({
-  selector: 'app-input-text',
+  selector: 'app-textarea',
   standalone: true,
   imports: [ NgIf, NgClass],
-  templateUrl: './input-text.component.html',
+  templateUrl: './textarea.component.html',
   styleUrls: ['../input.css']
 })
-export class InputTextComponent implements ControlValueAccessor {
+export class TextareaComponent implements ControlValueAccessor {
   @Input() label?: string;
   @Input() placeholder: string = '';
   @Input() maxlength?: number;
@@ -58,11 +58,11 @@ export class InputTextComponent implements ControlValueAccessor {
   }
 
   getMaxLength():number | undefined{
-    return getMaxLength(this.control, this.maxlength);
+    return getMaxLength(this.control, this.maxlength)
   }
 
   get errorMessage(): string | null {
-    return getErrorMessage(this.control, this.maxlength);
+    return getErrorMessage(this.control, this.maxlength)
   }
 
   writeValue(value: any): void {

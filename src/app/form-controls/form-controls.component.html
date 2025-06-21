@@ -64,5 +64,30 @@
         <pre>{{this.formCheckBox?.getRawValue() | json}}</pre>
       </section>
     </mat-expansion-panel>
+
+    <mat-expansion-panel id="input-date-section">
+      <mat-expansion-panel-header><mat-panel-title> Date </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formDate" [formGroup]="formDate">
+          <app-input-date formControlName="bd" [label]="'Birthday'" />
+          <app-input-date formControlName="bdRequired" [label]="'Birthday Required?'" />
+          <app-input-date formControlName="bdDisabled" [label]="'Birthday Disabled?'" />
+          <app-input-date formControlName="bdRange" [type]="'range'" [label]="'Birthday Range'" />
+        </form>
+        <pre>{{this.formDate?.getRawValue() | json}}</pre>
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="textarea-section">
+      <mat-expansion-panel-header><mat-panel-title> Text Area </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formTextarea" [formGroup]="formTextarea">
+          <app-textarea formControlName="random" [label]="'Random'" />
+          <app-textarea formControlName="randomRequired" [label]="'Random Required?'" />
+          <app-textarea formControlName="randomDisabled" [label]="'Random Disabled?'" />
+        </form>
+        <pre>{{this.formTextarea?.getRawValue() | json}}</pre>
+      </section>
+    </mat-expansion-panel>
   </mat-accordion>
 </main>

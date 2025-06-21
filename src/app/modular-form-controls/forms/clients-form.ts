@@ -1,7 +1,7 @@
 import { Validators } from '@angular/forms';
-import { FieldRuleSet } from './rule-engine.types';
+import { FieldRuleSet } from '../config/rule-engine.types';
 
-export const CLIENTE_RULES: FieldRuleSet = {
+export const CLIENT_FORM: FieldRuleSet = {
   edad: {
     initialValue: 30,
     // si quieres que siempre se muestre, no necesitas condiciones

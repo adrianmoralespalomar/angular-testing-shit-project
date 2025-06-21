@@ -1,16 +1,11 @@
 <form [formGroup]="form">
-  <!-- Ejemplo edad -->
-  <label>Edad</label>
-  <input type="number" formControlName="edad" />
+  <app-input-number [label]="'Age'" formControlName="edad" />
 
+  <app-input-text *ngIf="campoVisible('nombre')" [label]="'Name'" formControlName="nombre" />
 
-  <!-- Ejemplo nombre -->
-  <ng-container *ngIf="campoVisible('nombre')">
-    <label>Nombres {{this.isMandatoryField('nombre') ? '*':''}}</label>
-    <input type="text" formControlName="nombre" />
-  </ng-container>
-
-  <span>{{this.form.getRawValue() | json}}</span>
+  <span>{{ this.form.getRawValue() | json }}</span>
+  <p>Nombre Shown if Age > 29</p>
+  <p>Nombre Required if Age >34</p>
 
   <button [disabled]="this.form.invalid">Guardar</button>
 </form>

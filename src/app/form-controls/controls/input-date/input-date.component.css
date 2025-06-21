@@ -1,0 +1,9 @@
+.range-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.range-separator {
+  font-size: 1.2rem;
+}

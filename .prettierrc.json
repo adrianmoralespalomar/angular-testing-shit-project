@@ -1,0 +1,9 @@
+{
+  "bracketSameLine": true,
+  "endOfLine": "auto",
+  "printWidth": 12000000,
+  "singleAttributePerLine": false,
+  "tabWidth": 2,
+  "useTabs": false,
+  "importOrder": ["<THIRD_PARTY_MODULES>", "interface", "(?=content|api)", "context/", "mock/", "config", "utils/", "hooks/", "(components/|./index)", ".svg", "^../(.*)$", "(?=./styles.module.scss)"]
+}
