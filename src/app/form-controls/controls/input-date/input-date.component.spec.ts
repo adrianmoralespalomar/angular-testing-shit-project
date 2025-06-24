@@ -1,7 +1,5 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { InputDateComponent } from './input-date.component';
 
@@ -11,9 +9,8 @@ describe('InputDateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputDateComponent ]
-    })
-    .compileComponents();
+      imports: [InputDateComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

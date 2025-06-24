@@ -1,7 +1,5 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { ModularFormControlsComponent } from './modular-form-controls.component';
 
@@ -11,9 +9,8 @@ describe('ModularFormControlsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModularFormControlsComponent ]
-    })
-    .compileComponents();
+      imports: [ModularFormControlsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

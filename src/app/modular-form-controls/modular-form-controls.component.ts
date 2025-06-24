@@ -17,6 +17,8 @@ export class ModularFormControlsComponent {
   private readonly formBuilder = inject(FormBuilder);
   form = buildForm(this.formBuilder, CLIENT_FORM);
 
+  julita() {}
+
   // utilidades para la plantilla, si las necesitas
   campoVisible(path: string) {
     return !this.form.get(path)!.disabled;

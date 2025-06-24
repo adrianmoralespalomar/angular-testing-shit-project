@@ -1,8 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormControlsComponent } from './form-controls.component';
 
 describe('FormControlsComponent', () => {
@@ -11,9 +10,8 @@ describe('FormControlsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormControlsComponent ]
-    })
-    .compileComponents();
+      imports: [FormControlsComponent, BrowserAnimationsModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

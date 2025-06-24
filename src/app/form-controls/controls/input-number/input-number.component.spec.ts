@@ -1,7 +1,5 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { InputNumberComponent } from './input-number.component';
 
@@ -11,9 +9,8 @@ describe('InputNumberComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputNumberComponent ]
-    })
-    .compileComponents();
+      imports: [InputNumberComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

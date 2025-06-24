@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="modular-form-controls">
   <app-input-number [label]="'Age'" formControlName="edad" />
 
   <app-input-text *ngIf="campoVisible('nombre')" [label]="'Name'" formControlName="nombre" />

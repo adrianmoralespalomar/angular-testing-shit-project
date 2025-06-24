@@ -1,0 +1,87 @@
+            "polyfills": ["zone.js"],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.css"],
+            "karmaConfig": "karma.conf.js",
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.css"],
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
+    })
+  );
+      imports: [CheckboxComponent],
+    }).compileComponents();
+      imports: [InputDateComponent],
+    }).compileComponents();
+      imports: [InputNumberComponent],
+    }).compileComponents();
+      imports: [InputTextComponent],
+    }).compileComponents();
+      imports: [RadioButtonComponent],
+    }).compileComponents();
+      imports: [TextareaComponent],
+    }).compileComponents();
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+      imports: [FormControlsComponent, BrowserAnimationsModule],
+    }).compileComponents();
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+  beforeEach(waitForAsync(() => {
+      imports: [ListWithExpandedrowsComponent, CommonModule, MatTableModule, MatIconModule, DragDropModule, MatButtonModule, MatExpansionModule, BrowserAnimationsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(ListWithExpandedrowsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, NO_ERRORS_SCHEMA, OnInit, QueryList, ViewChildren } from '@angular/core';
+  imports: [MatTableModule, MatIconModule, DragDropModule, MatButtonModule, MatExpansionModule, CommonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule],
+  standalone: true,
+  schemas: [NO_ERRORS_SCHEMA],
+  animations: [trigger('detailExpand', [state('collapsed', style({ height: '0px', minHeight: '0' })), state('expanded', style({ height: '*' })), transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))])],
+  constructor(private cdr: ChangeDetectorRef) {}
+  ngOnInit() {}
+  @ViewChildren(MatTable) table: QueryList<MatTable<PeriodicElement> | undefined> | undefined;
+  protected onClickParent = (parentClicked: PeriodicElement) => {
+    console.log(parentClicked);
+    if (parent > -1 && this.dataSource?.[parent]?.children !== undefined) {
+    console.log(this.dataSource[this.dataSource.findIndex((item) => item.position === parentClicked.position)]);
+  };
+    if (parent > -1 && this.dataSource?.[parent]?.children !== undefined) {
+      children: [
+          description: 'Pepitoooo',
+          description: 'Pepitoooo 2',
+        },
+        atomic weight of 1.008, hydrogen is the lightest element on the periodic table.`,
+    },
+    {
+      children: [
+          description: 'Pepitoooo',
+          description: 'Pepitoooo 2',
+        },
+      group in the periodic table. Its boiling point is the lowest among all the elements.`,
+    },
+    {
+      lightest solid element.`,
+    },
+  public columnsToDisplay = ['name', 'weight', 'symbol', 'position', 'action'];
+  expanded: boolean;
+  children?: PeriodicElement[];
+form.modular-form-controls {
+}
+<form [formGroup]="form" class="modular-form-controls">
+      imports: [ModularFormControlsComponent],
+    }).compileComponents();
+  julita() {}
