@@ -1,52 +1,91 @@
 #!/bin/bash
 
-# CONFIGURA aquí tu rama base (puede ser origin/main o develop)
-BASE_BRANCH=origin/main
+BASE_BRANCH=HEAD
 
-# Ejecutar tests con cobertura
 echo "🧪 Ejecutando tests con cobertura..."
 ng test --code-coverage --watch=false > /dev/null
 
-# Comprobar si coverage existe
 COVERAGE_FILE="coverage/angular-testing-shit-project/lcov.info"
 if [ ! -f "$COVERAGE_FILE" ]; then
   echo "❌ No se encontró el archivo de cobertura: $COVERAGE_FILE"
   exit 1
 fi
 
-# Obtener líneas nuevas (añadidas) en los archivos
 echo "🔍 Analizando cambios respecto a $BASE_BRANCH..."
-git diff $BASE_BRANCH --unified=0 | grep '^+[^+]' | sed 's/^+//' > .changed_lines.tmp
+git diff $BASE_BRANCH --cached --unified=0 -- 'src/**/*.ts' |
+  awk '
+  /^diff --git/ { next }
+  /^---/ { next }
+  /^\+\+\+ b\// {
+    file = substr($0, 7)
+    gsub("\\\\", "/", file)
+    next
+  }
+  /^@@/ {
+    match($0, /\+([0-9]+)/, m)
+    lineno = m[1]
+    next
+  }
+  /^\+/ && !/^\+\+/ {
+    print file ":" lineno
+    lineno++
+    next
+  }
+  !/^\+/ { lineno++ }
+' > .changed_lines.tmp
 
 echo "📊 Comprobando líneas no cubiertas:"
 echo "----------------------------------"
 
-# Procesar cada línea añadida
+EXIT_CODE=0
+
 while IFS= read -r line; do
-  # Extraer archivo y número de línea
-  FILE_LINE=$(echo "$line" | grep -oE 'src/[^:]+:[0-9]+')
-  FILE=$(echo "$FILE_LINE" | cut -d: -f1)
-  LINE_NUM=$(echo "$FILE_LINE" | cut -d: -f2)
+  FILE=$(echo "$line" | cut -d: -f1)
+  LINE_NUM=$(echo "$line" | cut -d: -f2)
 
-  if [ -z "$FILE" ] || [ -z "$LINE_NUM" ]; then
-    continue
-  fi
+  # Normaliza la ruta (quita ./ al inicio, y convierte / y \ en una forma comparable)
+  FILE_NORMALIZED=$(echo "$FILE" | sed 's/^\.\/\?//' | sed 's/\//\\\\/g')
 
-  # Buscar en lcov si está cubierta
-  COVERED=$(awk -v file="$FILE" -v line="$LINE_NUM" '
-    BEGIN { found=0 }
-    $0 ~ "SF:"file { found=1 }
-    found && $0 ~ "^DA:"line"," {
-      split($0, a, ",")
-      if (a[2] == 0) {
-        print file ":" line
+  FOUND_LINE=$(awk -v file="$FILE_NORMALIZED" -v line="$LINE_NUM" '
+    function normalize(s) {
+      gsub("\\\\", "/", s)
+      return s
+    }
+    BEGIN {
+      current_file = ""
+      is_target_file = 0
+      matched = 0
+    }
+    /^SF:/ {
+      current_file = normalize(substr($0, 4))
+      is_target_file = (current_file ~ normalize(file))
+    }
+    is_target_file && /^DA:/ {
+      split($0, parts, "[:,]")
+      if (parts[2] == line) {
+        matched = 1
+        if (parts[3] == "0") {
+          print "❌ " file ":" line
+        }
+        exit
       }
-      exit
-    }' $COVERAGE_FILE)
+    }
+    END {
+      if (is_target_file && matched == 0) {
+        print "❌ " file ":" line
+      }
+    }
+  ' "$COVERAGE_FILE")
 
-  if [ -n "$COVERED" ]; then
-    echo "❌ $COVERED"
+  if [[ "$FOUND_LINE" == ❌* ]]; then
+    echo "$FOUND_LINE"
+    EXIT_CODE=1
   fi
+
 done < .changed_lines.tmp
 
-rm .changed_lines.tmp
+echo "🔧 Líneas detectadas:"
+cat .changed_lines.tmp
+
+rm -f .changed_lines.tmp
+exit $EXIT_CODE
