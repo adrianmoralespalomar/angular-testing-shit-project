@@ -30,14 +30,26 @@
           <app-input-number formControlName="numberWith2DecimalsNoInput" [label]="'Numero With 2 Decimals no [maxdecimals] input'" [maxdecimals]="2" />
           <app-input-number formControlName="numberDisabled" [label]="'Numero Disabled'" />
           <app-input-number formControlName="numberReadonly" [label]="'Numero Readonly'" [isReadonly]="true" />
-          <app-input-number formControlName="percentage" [label]="'Porcentage'" [typeNumber]="'percentage'"  />
+          <app-input-number formControlName="percentage" [label]="'Porcentage'" [typeNumber]="'percentage'" />
         </form>
-        <pre>{{this.formNumber?.getRawValue() | json}}</pre>
+        <pre>{{ this.formNumber?.getRawValue() | json }}</pre>
       </section>
 
       <section id="no-form-controls">
         <app-input-number [label]="'Numero no Form Disabled'" [placeholder]="'Numero no Form Disabled'" [externalDisabled]="true" [externalValue]="33.3333" [maxdecimals]="4" />
         <app-input-number [label]="'Numero no Form Readonly'" [placeholder]="'Numero no Form Readonly'" [externalDisabled]="true" [externalValue]="11.4" [maxdecimals]="1" [isReadonly]="true" />
+      </section>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="select-section">
+      <mat-expansion-panel-header><mat-panel-title> Select </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formSelect" [formGroup]="formSelect">
+          <app-select formControlName="city" [label]="'Ciudad'" [placeholder]="'Select a city'" [options]="this.cities" />
+          <app-select formControlName="citySelected" [label]="'Ciudad Selected'" [options]="this.cities" />
+          <app-select formControlName="cityDisabled" [label]="'Ciudad Disabled'" [options]="this.cities" />
+        </form>
+        <pre>{{ this.formSelect?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
 
@@ -49,7 +61,7 @@
           <app-radio-button formControlName="genreRequired" [label]="'Genres Required'" [options]="this.genres" />
           <app-radio-button formControlName="genreDisabled" [label]="'Genres Disabled '" [options]="this.genres" />
         </form>
-        <pre>{{this.formRaddioButton?.getRawValue() | json}}</pre>
+        <pre>{{ this.formRaddioButton?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
 
@@ -61,7 +73,7 @@
           <app-checkbox formControlName="isSpanishRequired" [label]="'Is Spanish Required?'" />
           <app-checkbox formControlName="isSpanishDisabled" [label]="'Is Spanish Disabled?'" />
         </form>
-        <pre>{{this.formCheckBox?.getRawValue() | json}}</pre>
+        <pre>{{ this.formCheckBox?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
 
@@ -74,7 +86,7 @@
           <app-input-date formControlName="bdDisabled" [label]="'Birthday Disabled?'" />
           <app-input-date formControlName="bdRange" [type]="'range'" [label]="'Birthday Range'" />
         </form>
-        <pre>{{this.formDate?.getRawValue() | json}}</pre>
+        <pre>{{ this.formDate?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
 
@@ -86,7 +98,7 @@
           <app-textarea formControlName="randomRequired" [label]="'Random Required?'" />
           <app-textarea formControlName="randomDisabled" [label]="'Random Disabled?'" />
         </form>
-        <pre>{{this.formTextarea?.getRawValue() | json}}</pre>
+        <pre>{{ this.formTextarea?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
   </mat-accordion>

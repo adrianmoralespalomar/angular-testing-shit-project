@@ -1,0 +1,14 @@
+form.dynamic-form {
+  --gap-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--gap-size);
+  padding: 2rem;
+  background-color: var(--form-bg-color);
+  border-radius: 0.75rem;
+  .field-container {
+    flex: 1 1 calc(33.33% - var(--gap-size));
+    max-width: calc(33.33% - var(--gap-size));
+  }
+}

@@ -1,0 +1,4 @@
+<form [formGroup]="form" class="modular-form-controls">
+  <app-dynamic-form [form]="form" [rules]="client_rules" />
+  <span>{{ this.form.getRawValue() | json }}</span>
+</form>

@@ -1,35 +1,39 @@
-div.input-wrapper{
+div.input-wrapper {
   display: flex;
   flex-direction: column;
-  gap:0.25rem;
-  label{
+  gap: 0.25rem;
+  label {
     font-size: var(--form-control-font-size);
   }
-  input, textarea{
-    background-color:var(--form-control-bg-color);
+  input,
+  textarea,
+  select {
+    appearance: none;
+    background-color: var(--form-control-bg-color);
     border-radius: 0.5em;
     border: solid 0.15rem var(--form-control-border-color);
     field-sizing: content;
     font-size: var(--form-control-font-size);
     outline: none;
     padding: 1rem;
+    position: relative;
     resize: none;
-    max-height: 3rem;
-    transition: border 150ms cubic-bezier(0.4,0,0.2,1);
-    &:focus{
-      border: 0.15rem solid var(--form-control-focus-border-color)
+    max-height: 5rem;
+    transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    &:focus {
+      border: 0.15rem solid var(--form-control-focus-border-color);
     }
     &.disabled {
       background-color: var(--form-control-disabled-bg-color);
     }
-    &.readonly{
+    &.readonly {
       background-color: var(--form-control-readonly-bg-color);
     }
-    &.error{
+    &.error {
       border: 0.15rem solid var(--form-control-error-border-color);
     }
   }
-  & div.input-extra-data{
+  & div.input-extra-data {
     display: flex;
     justify-content: space-between;
     align-items: center;

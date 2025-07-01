@@ -1,0 +1,9 @@
+<form [formGroup]="form" class="dynamic-form">
+  <div class="field-container" *ngFor="let field of visibleFields">
+    <ng-container [ngSwitch]="rules[field].component">
+      <app-input-number *ngSwitchCase="InputNumberComponent" [formControlName]="field" [label]="rules[field].label"> </app-input-number>
+      <app-input-text *ngSwitchCase="InputTextComponent" [formControlName]="field" [label]="rules[field].label"> </app-input-text>
+      <div *ngSwitchDefault style="color: red; font-style: italic">⚠️ Componente no definido para este campo</div>
+    </ng-container>
+  </div>
+</form>

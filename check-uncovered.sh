@@ -12,7 +12,7 @@ if [ ! -f "$COVERAGE_FILE" ]; then
 fi
 
 echo "🔍 Analizando cambios respecto a $BASE_BRANCH..."
-git diff $BASE_BRANCH --cached --unified=0 -- 'src/**/*.ts' |
+git diff $BASE_BRANCH --cached --unified=0 -- 'src/**/*.ts' ':(exclude)*.spec.ts'
   awk '
   /^diff --git/ { next }
   /^---/ { next }

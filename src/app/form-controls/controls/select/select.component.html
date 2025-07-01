@@ -1,0 +1,23 @@
+<div class="input-wrapper">
+  <label> {{ label }} <span *ngIf="isRequired" class="required-star">*</span> </label>
+
+  <div class="select-container">
+    <select (blur)="onTouched()" (change)="onSelectChange($event)" [disabled]="isFormBound ? isDisabled : externalDisabled" [ngClass]="{ error: showError, readonly: isReadonly, disabled: isFormBound ? isDisabled : externalDisabled }" [value]="isFormBound ? value : externalValue">
+      <option [value]="null" disabled>
+        {{ placeholder || "Select an option" }}
+      </option>
+
+      <option *ngFor="let opt of options" [value]="opt.value">
+        {{ opt.label }}
+      </option>
+    </select>
+    <span class="clean-select-button" *ngIf="!isReadonly && value !== null && value !== undefined" (click)="clearSelection()"></span>
+    <span class="custom-arrow"></span>
+  </div>
+
+  <div *ngIf="isFormBound && showError" class="input-extra-data">
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
