@@ -7,11 +7,11 @@ import { ControlValueAccessor, NgControl, ReactiveFormsModule } from '@angular/f
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.css']
+  styleUrls: ['./checkbox.component.css'],
 })
-export class CheckboxComponent implements ControlValueAccessor  {
-@Input() label: string = '';
-  @Input() externalValue: boolean | null = null;
+export class CheckboxComponent implements ControlValueAccessor {
+  @Input() label: string = '';
+  @Input() externalValue: any | null = null;
   @Input() isReadonly: boolean = false;
   @Input() externalDisabled: boolean = false;
 
@@ -80,5 +80,4 @@ export class CheckboxComponent implements ControlValueAccessor  {
     this.onChange(this.value);
     this.externalValue = this.value;
   }
-
 }

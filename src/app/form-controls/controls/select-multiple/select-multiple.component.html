@@ -1,0 +1,23 @@
+<!-- Dropdown simulando select con checkboxes -->
+<div class="input-wrapper">
+  <label> {{ this.label }} <span *ngIf="isRequired" class="required-star">*</span> </label>
+  <div class="dropdown-container">
+    <section class="dropdown" (click)="toggleDropdown()" [class.open]="isDropdownOpen" [ngClass]="{ error: showError, readonly: isReadonly, disabled: isFormBound ? isDisabled : externalDisabled }">
+      <span>
+        {{ getMultiSelectLabel() || placeholder || "Selecciona opciones" }}
+      </span>
+      <span class="custom-arrow"></span>
+    </section>
+
+    <section class="dropdown-panel" *ngIf="isDropdownOpen">
+      <div *ngFor="let opt of options" class="checkbox-option">
+        <app-checkbox [externalValue]="isOptionSelected(opt)" [label]="opt.label" (change)="onCheckboxChange(opt.value, $event)" />
+      </div>
+    </section>
+  </div>
+  <div *ngIf="isFormBound && showError" class="input-extra-data">
+    <div *ngIf="showError" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

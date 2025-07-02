@@ -1,3 +1,5 @@
+@import url("./global-controls-styles.css");
+
 div.input-wrapper {
   display: flex;
   flex-direction: column;
@@ -5,13 +7,14 @@ div.input-wrapper {
   label {
     font-size: var(--form-control-font-size);
   }
-  input,
+  input:not([type="checkbox"]),
   textarea,
-  select {
+  select,
+  section.dropdown {
     appearance: none;
     background-color: var(--form-control-bg-color);
-    border-radius: 0.5em;
-    border: solid 0.15rem var(--form-control-border-color);
+    border-radius: var(--form-control-border-radius);
+    border: solid var(--form-control-border-width) var(--form-control-border-color);
     field-sizing: content;
     font-size: var(--form-control-font-size);
     outline: none;
@@ -21,19 +24,20 @@ div.input-wrapper {
     max-height: 5rem;
     transition: border 150ms cubic-bezier(0.4, 0, 0.2, 1);
     &:focus {
-      border: 0.15rem solid var(--form-control-focus-border-color);
+      border-color: var(--form-control-focus-border-color);
     }
     &.disabled {
       background-color: var(--form-control-disabled-bg-color);
+      color: var(--form-control-disabled-color);
     }
     &.readonly {
       background-color: var(--form-control-readonly-bg-color);
     }
     &.error {
-      border: 0.15rem solid var(--form-control-error-border-color);
+      border-color: var(--form-control-error-border-color);
     }
   }
-  & div.input-extra-data {
+  div.input-extra-data {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,5 +54,73 @@ div.input-wrapper {
       white-space: nowrap;
       margin-left: auto;
     }
+  }
+}
+
+/*To create Cross*/
+.clean-select-button {
+  position: absolute;
+  top: 0;
+  right: 2.3rem;
+  display: block;
+  background-color: transparent;
+  height: 100%;
+  width: 2rem;
+  cursor: pointer;
+  &:hover {
+    &::before,
+    &::after {
+      background-color: var(--form-control-focus-border-color);
+    }
+  }
+  &::before,
+  &::after {
+    position: absolute;
+    cursor: pointer;
+    content: " ";
+    height: 1.5rem;
+    left: 50%;
+    top: 25%;
+    width: 2px;
+    background-color: var(--form-control-border-color);
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+/*To create Triangle*/
+.custom-arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  background-color: transparent;
+  height: 100%;
+  width: 3rem;
+  pointer-events: none;
+  &::before,
+  &::after {
+    --size-triangles: 0.5rem;
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &::before {
+    border-left: var(--size-triangles) solid transparent;
+    border-right: var(--size-triangles) solid transparent;
+    border-bottom: var(--size-triangles) solid var(--form-control-border-color);
+    top: 35%;
+  }
+  &::after {
+    border-left: var(--size-triangles) solid transparent;
+    border-right: var(--size-triangles) solid transparent;
+    border-top: var(--size-triangles) solid var(--form-control-border-color);
+    top: 55%;
   }
 }

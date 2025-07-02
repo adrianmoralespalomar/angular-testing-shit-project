@@ -1,11 +1,6 @@
 <div class="checkbox-wrapper">
   <label class="checkbox-section" [ngClass]="{ disabled: isDisabled || externalDisabled }">
-    <input
-      type="checkbox"
-      [checked]="value"
-      (change)="onToggleChange($event)"
-      [disabled]="isDisabled || externalDisabled"
-    />
+    <input type="checkbox" [checked]="isFormBound ? value : externalValue" (change)="onToggleChange($event)" [disabled]="isDisabled || externalDisabled" />
     <span>{{ label }} <span *ngIf="isRequired" class="required">*</span></span>
   </label>
 

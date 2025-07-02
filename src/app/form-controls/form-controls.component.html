@@ -53,6 +53,18 @@
       </section>
     </mat-expansion-panel>
 
+    <mat-expansion-panel id="select-multiple-section">
+      <mat-expansion-panel-header><mat-panel-title> Select Multiple</mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <form *ngIf="formSelectMultiple" [formGroup]="formSelectMultiple">
+          <app-select-multiple formControlName="city" [label]="'Ciudad'" [placeholder]="'Select a city'" [options]="this.cities" />
+          <app-select-multiple formControlName="citySelected" [label]="'Ciudad Selected'" [options]="this.cities" />
+          <app-select-multiple formControlName="cityDisabled" [label]="'Ciudad Disabled'" [options]="this.cities" />
+        </form>
+        <pre>{{ this.formSelectMultiple?.getRawValue() | json }}</pre>
+      </section>
+    </mat-expansion-panel>
+
     <mat-expansion-panel id="raddio-button-section">
       <mat-expansion-panel-header><mat-panel-title> Raddio Button </mat-panel-title></mat-expansion-panel-header>
       <section id="form-controls">

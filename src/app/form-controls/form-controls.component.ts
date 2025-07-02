@@ -13,13 +13,14 @@ import { InputDateComponent } from './controls/input-date/input-date.component';
 import { InputNumberComponent } from './controls/input-number/input-number.component';
 import { InputTextComponent } from './controls/input-text/input-text.component';
 import { RadioButtonComponent, RadioButtonOptions } from './controls/radio-button/radio-button.component';
+import { SelectMultipleComponent } from './controls/select-multiple/select-multiple.component';
 import { SelectOption } from './controls/select/select-option-interface';
 import { SelectComponent } from './controls/select/select.component';
 import { TextareaComponent } from './controls/textarea/textarea.component';
 
 @Component({
   selector: 'app-form-controls',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, InputTextComponent, InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent, InputDateComponent, TextareaComponent, SelectComponent],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, InputTextComponent, InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent, InputDateComponent, TextareaComponent, SelectComponent, SelectMultipleComponent],
   standalone: true,
   templateUrl: './form-controls.component.html',
   styleUrls: ['./form-controls.component.css'],
@@ -29,12 +30,14 @@ export class FormControlsComponent implements OnInit {
   protected formText: FormGroup | undefined = undefined;
   protected formNumber: FormGroup | undefined = undefined;
   protected formSelect: FormGroup | undefined = undefined;
+  protected formSelectMultiple: FormGroup | undefined = undefined;
   protected cities: SelectOption[] = [
     { label: 'Madrid', value: 1 },
     { label: 'Barcelona', value: 2 },
     { label: 'Sevilla', value: 3 },
     { label: 'True', value: true },
     { label: 'False', value: false },
+    { label: 'False as string', value: 'false' },
   ];
   protected formRaddioButton: FormGroup | undefined = undefined;
   protected genres: RadioButtonOptions[] = [
@@ -49,6 +52,7 @@ export class FormControlsComponent implements OnInit {
     this.setInitialFormText();
     this.setInitialFormNumber();
     this.setInitialFormSelect();
+    this.setInitialFormSelectMultiple();
     this.setInitialFormRaddioButton();
     this.setInitialFormCheckBox();
     this.setInitialFormDate();
@@ -84,6 +88,14 @@ export class FormControlsComponent implements OnInit {
       city: this._formBuilder.control(null),
       citySelected: this._formBuilder.control(this.cities[2].value, [Validators.required]),
       cityDisabled: this._formBuilder.control({ value: this.cities[1].value, disabled: true }, [Validators.required]),
+    });
+  }
+
+  setInitialFormSelectMultiple() {
+    this.formSelectMultiple = this._formBuilder.group({
+      city: this._formBuilder.control(null),
+      citySelected: this._formBuilder.control([this.cities[0].value, this.cities[2].value], [Validators.required]),
+      cityDisabled: this._formBuilder.control({ value: [this.cities[3].value, this.cities[4].value], disabled: true }, [Validators.required]),
     });
   }
 

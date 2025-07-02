@@ -1,0 +1,16 @@
+*[class*="-wrapper"] {
+  --form-control-border-radius: 0.5em;
+  --form-control-border-width: 0.15rem;
+  --form-bg-color: #669ce3;
+  --form-control-bg-color: #f9f9f9;
+  --form-control-border-color: #9e9e9e;
+  --form-control-disabled-bg-color: #eee;
+  --form-control-disabled-color: #545454;
+  --form-control-error-border-color: #e53935;
+  --form-control-error-value-color: #e53935;
+  --form-control-focus-border-color: #669ce3;
+  --form-control-readonly-bg-color: #eee;
+  --form-control-success-bg-color: #669ce3;
+  --form-control-success-disabled-bg-color: #669ce3bd;
+  --form-control-font-size: 1rem;
+}
