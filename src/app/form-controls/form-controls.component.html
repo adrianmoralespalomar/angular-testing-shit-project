@@ -113,5 +113,14 @@
         <pre>{{ this.formTextarea?.getRawValue() | json }}</pre>
       </section>
     </mat-expansion-panel>
+
+    <mat-expansion-panel id="dual-list-transfer-section">
+      <mat-expansion-panel-header><mat-panel-title> Dual List Transfer </mat-panel-title></mat-expansion-panel-header>
+      <section id="form-controls">
+        <app-dual-list-transfer [availableItems]="dualListTransferAvailable" [selectedItems]="dualListTransferSelected" (selectionChanged)="updateDualListTransfer($event)" />
+        <pre>{{ dualListTransferAvailable | json }}</pre>
+        <pre>{{ dualListTransferSelected | json }}</pre>
+      </section>
+    </mat-expansion-panel>
   </mat-accordion>
 </main>

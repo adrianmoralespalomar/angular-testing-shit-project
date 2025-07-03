@@ -1,0 +1,32 @@
+<section class="dual-list-wrapper">
+  <!-- Available List -->
+  <article class="list-column">
+    <app-input-text [placeholder]="'Serach by description'" [(ngModel)]="availableFilter" />
+
+    <div class="list-scroll">
+      <app-checkbox *ngFor="let item of filteredAvailable" [label]="item.description" (change)="toggleSelection(availableChecked, item.id)" />
+      <!-- <label *ngFor="let item of filteredAvailable" style="'display:block;margin-bottom: 0.25rem'">
+        <input type="checkbox" [checked]="availableChecked.has(item.id)" (change)="toggleSelection(availableChecked, item.id)" />
+        {{ item.description }}
+      </label> -->
+    </div>
+  </article>
+
+  <!-- Buttons -->
+  <article a class="buttons-column">
+    <button class="arrow right" (click)="moveToSelected()" [disabled]="availableChecked.size === 0"></button>
+    <button class="arrow left" (click)="moveToAvailable()" [disabled]="selectedChecked.size === 0">←</button>
+  </article>
+
+  <!-- Selected List -->
+  <article class="list-column">
+    <app-input-text [placeholder]="'Serach by description'" [(ngModel)]="selectedFilter" />
+    <div class="list-scroll">
+      <app-checkbox *ngFor="let item of filteredSelected" [label]="item.description" (change)="toggleSelection(selectedChecked, item.id)" />
+      <!-- <label *ngFor="let item of filteredSelected" style="'display:block;margin-bottom: 0.25rem'">
+        <input type="checkbox" [checked]="selectedChecked.has(item.id)" (change)="toggleSelection(selectedChecked, item.id)" />
+        {{ item.description }}
+      </label> -->
+    </div>
+  </article>
+</section>

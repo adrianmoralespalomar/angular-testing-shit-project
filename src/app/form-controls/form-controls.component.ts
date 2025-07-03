@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { CheckboxComponent } from './controls/checkbox/checkbox.component';
+import { DualListTransferComponent, TransferItem } from './controls/dual-list-transfer/dual-list-transfer.component';
 import { InputDateComponent } from './controls/input-date/input-date.component';
 import { InputNumberComponent } from './controls/input-number/input-number.component';
 import { InputTextComponent } from './controls/input-text/input-text.component';
@@ -20,7 +21,7 @@ import { TextareaComponent } from './controls/textarea/textarea.component';
 
 @Component({
   selector: 'app-form-controls',
-  imports: [MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, InputTextComponent, InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent, InputDateComponent, TextareaComponent, SelectComponent, SelectMultipleComponent],
+  imports: [MatTableModule, MatIconModule, MatButtonModule, MatExpansionModule, CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, InputTextComponent, InputNumberComponent, MatExpansionModule, RadioButtonComponent, CheckboxComponent, InputDateComponent, TextareaComponent, SelectComponent, SelectMultipleComponent, DualListTransferComponent],
   standalone: true,
   templateUrl: './form-controls.component.html',
   styleUrls: ['./form-controls.component.css'],
@@ -47,6 +48,23 @@ export class FormControlsComponent implements OnInit {
   protected formCheckBox: FormGroup | undefined = undefined;
   protected formDate: FormGroup | undefined = undefined;
   protected formTextarea: FormGroup | undefined = undefined;
+  protected dualListTransferAvailable: TransferItem[] = [
+    { id: 1, description: 'Descripción larga 1' },
+    { id: 2, description: 'Descripción larga 2' },
+    { id: 3, description: 'Descripción larga 3' },
+    { id: 4, description: 'Descripción larga 4' },
+    { id: 5, description: 'Descripción larga 5' },
+    { id: 6, description: 'Descripción larga 6' },
+    { id: 7, description: 'Descripción larga 7' },
+    { id: 8, description: 'Descripción larga 8' },
+    { id: 9, description: 'Descripción larga 9' },
+    { id: 10, description: 'Descripción larga 10' },
+    { id: 11, description: 'Descripción larga 11' },
+    { id: 12, description: 'Descripción larga 12' },
+    { id: 13, description: 'Descripción larga 13' },
+    { id: 14, description: 'Descripción larga 14' },
+  ];
+  protected dualListTransferSelected: TransferItem[] = [];
 
   ngOnInit() {
     this.setInitialFormText();
@@ -130,6 +148,11 @@ export class FormControlsComponent implements OnInit {
       randomRequired: this._formBuilder.control(null, [Validators.required]),
       randomDisabled: [{ value: null, disabled: true }, [Validators.required]],
     });
+  }
+
+  updateDualListTransfer(e: { availableItems: TransferItem[]; selectedItems: TransferItem[] }) {
+    this.dualListTransferAvailable = e.availableItems;
+    this.dualListTransferSelected = e.selectedItems;
   }
 }
 
