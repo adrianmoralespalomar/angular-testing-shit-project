@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
@@ -30,12 +31,14 @@ export class PokemonService {
 
 @Component({
   template: `
-    <app-table [data]="dataPokemon" [config]="tableConfigPokemon" [meta]="linksPokemon" (requestData)="loadPokemons($event)" />
     <app-table [data]="dataPersons" [config]="tableConfigPersons" [meta]="linksPersonas" />
+    <app-table [data]="dataPokemon" [config]="tableConfigPokemon" [meta]="linksPokemon" (requestData)="loadPokemons($event)" />
+    <app-table [data]="dataCities" [config]="tableConfigCities" [meta]="linksCities" (selectionChange)="this.selectedCities = $event" />
+    <pre>{{ this.selectedCities | json }}</pre>
   `,
   styleUrls: ['./table.component.css'],
   standalone: true,
-  imports: [TableComponent],
+  imports: [TableComponent, JsonPipe],
 })
 export class TableTestComponent {
   dataPersons = [
@@ -105,4 +108,39 @@ export class TableTestComponent {
       };
     });
   }
+
+  dataCities = [
+    { nombre: 'Madrid', pais: 'España', isSelected: true },
+    { nombre: 'Sevilla', pais: 'España', isSelected: false },
+    { nombre: 'Murcia', pais: 'España', isSelected: false },
+    { nombre: 'Barcelona', pais: 'España', isSelected: true },
+  ];
+
+  selectedCities: any[] = [];
+
+  tableConfigCities: TableConfig = {
+    columns: [
+      { key: 'nombre', label: 'Nombre', type: 'text', sortable: true, filterable: true },
+      {
+        key: 'pais',
+        label: 'País',
+        type: 'select',
+        sortable: true,
+        filterable: true,
+        options: ['España', 'Francia', 'Italia'],
+      },
+    ],
+    serverSide: false,
+    persistFilters: true,
+    selectable: {
+      key: 'nombre', // Key to indicate wt its already selected
+      selectedValues: this.dataCities.filter((x) => x.isSelected).map((x) => x.nombre), // values that are already selected
+    },
+  };
+
+  linksCities: PaginationMeta = {
+    page: 1,
+    pageSize: 2,
+    total: 0,
+  };
 }

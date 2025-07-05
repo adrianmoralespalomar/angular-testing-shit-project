@@ -22,6 +22,8 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     filters: any;
     sort: { key: string; direction: 'asc' | 'desc' | '' };
   }>();
+  @Output() selectionChange = new EventEmitter<any[]>();
+  selectedRows: Set<any> = new Set();
 
   filters: { [key: string]: FormControl } = {};
   subscriptions: Subscription[] = [];
@@ -52,6 +54,14 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data'] && !this.config?.serverSide) {
       this.applyClientFilteringSortAndPagination();
+    }
+
+    if (changes['data'] && this.config?.selectable && typeof this.config.selectable === 'object') {
+      const { key, selectedValues } = this.config.selectable;
+      if (key && Array.isArray(selectedValues)) {
+        this.selectedRows = new Set(this.data.filter((row) => selectedValues.includes(row[key])));
+        this.selectionChange.emit(Array.from(this.selectedRows));
+      }
     }
   }
 
@@ -182,5 +192,19 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.applyClientFilteringSortAndPagination();
     }
+  }
+
+  toggleRowSelection(row: any, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedRows.add(row);
+    } else {
+      this.selectedRows.delete(row);
+    }
+    this.selectionChange.emit(Array.from(this.selectedRows));
+  }
+
+  isSelected(row: any): boolean {
+    return this.selectedRows.has(row);
   }
 }

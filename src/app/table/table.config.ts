@@ -11,6 +11,10 @@ export interface TableConfig {
   columns: TableColumn[];
   serverSide?: boolean;
   persistFilters?: boolean;
+  selectable?: {
+    key: string; // Propiedad por la que identificar la fila (ej: "nombre", "id", etc.)
+    selectedValues?: any[]; // Valores que indican qué filas vienen preseleccionadas
+  };
 }
 
 export interface PaginationMeta {

@@ -1,14 +1,20 @@
 <table>
   <thead>
     <tr>
+      <th *ngIf="config.selectable">
+        <!-- Aquí podrías añadir checkbox de "Seleccionar todos" si quieres -->
+        Pick
+      </th>
       <th *ngFor="let col of config.columns" (click)="changeSort(col.key)">
         {{ col.label }}
-        <span *ngIf="col.sortable">
-          {{ sortKey === col.key ? (sortDirection === "asc" ? "🔼" : "🔽") : "" }}
+        <span *ngIf="sortKey === col.key">
+          {{ sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "" }}
         </span>
       </th>
     </tr>
+
     <tr>
+      <th *ngIf="config.selectable"></th>
       <th *ngFor="let col of config.columns">
         <ng-container *ngIf="col.filterable">
           <input *ngIf="col.type !== 'select'" [formControl]="filters[col.key]" />
@@ -23,7 +29,12 @@
 
   <tbody>
     <tr *ngFor="let row of config.serverSide ? data : filteredData">
-      <td *ngFor="let col of config.columns">{{ row[col.key] }}</td>
+      <td *ngIf="config.selectable">
+        <input type="checkbox" [checked]="isSelected(row)" (change)="toggleRowSelection(row, $event)" />
+      </td>
+      <td *ngFor="let col of config.columns">
+        {{ row[col.key] }}
+      </td>
     </tr>
   </tbody>
 </table>
