@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
     <button mat-raised-button color="accent" [routerLink]="'form-controls'">Form Controls</button>
     <button mat-raised-button color="accent" [routerLink]="'modular-form-controls'">Modular Form Controls</button>
     <button mat-raised-button color="accent" [routerLink]="'modular-form-with-template'">Modular Form With Template</button>
+    <button mat-raised-button color="accent" [routerLink]="'table'">Table</button>
     <router-outlet />
   `,
 })

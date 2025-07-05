@@ -17,6 +17,10 @@ export const ROUTES: Routes = [
     path: 'modular-form-with-template',
     loadComponent: () => import('./modular-form-with-template/modular-form-with-template.component').then((x) => x.ModularFormWithTemplateComponent),
   },
+  {
+    path: 'table',
+    loadComponent: () => import('./table/table-test.component').then((x) => x.TableTestComponent),
+  },
 ];
 
 export default ROUTES;
