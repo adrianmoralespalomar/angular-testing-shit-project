@@ -9,6 +9,7 @@ export interface TableColumn {
 
 export interface TableConfig {
   columns: TableColumn[];
+  tableName: string;
   serverSide?: boolean;
   persistFilters?: boolean;
   selectable?: {
@@ -23,4 +24,11 @@ export interface PaginationMeta {
   total: number;
   next?: string;
   previous?: string;
+}
+
+export interface RequestData {
+  page: number;
+  pageSize: number;
+  filters: any;
+  sort: { key: string; direction: 'asc' | 'desc' | '' };
 }

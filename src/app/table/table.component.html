@@ -1,43 +1,37 @@
-<table>
-  <thead>
-    <tr>
-      <th *ngIf="config.selectable">
-        <!-- Aquí podrías añadir checkbox de "Seleccionar todos" si quieres -->
-        Pick
-      </th>
-      <th *ngFor="let col of config.columns" (click)="changeSort(col.key)">
-        {{ col.label }}
-        <span *ngIf="sortKey === col.key">
-          {{ sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "" }}
-        </span>
-      </th>
-    </tr>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let col of config.columns">
+          <section class="header-column-container">
+            <div class="header-column-label">
+              <span (click)="changeSort(col.key)">{{ col.label }}</span>
+              <span *ngIf="sortKey === col.key">
+                {{ sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "" }}
+              </span>
+            </div>
+            <ng-container *ngIf="col.filterable">
+              <input *ngIf="col.type !== 'select'" [formControl]="filters[col.key]" />
+              <select *ngIf="col.type === 'select'" [formControl]="filters[col.key]">
+                <option value="">--</option>
+                <option *ngFor="let opt of col.options" [value]="opt">{{ opt }}</option>
+              </select>
+            </ng-container>
+          </section>
+        </th>
+      </tr>
+    </thead>
 
-    <tr>
-      <th *ngIf="config.selectable"></th>
-      <th *ngFor="let col of config.columns">
-        <ng-container *ngIf="col.filterable">
-          <input *ngIf="col.type !== 'select'" [formControl]="filters[col.key]" />
-          <select *ngIf="col.type === 'select'" [formControl]="filters[col.key]">
-            <option value="">--</option>
-            <option *ngFor="let opt of col.options" [value]="opt">{{ opt }}</option>
-          </select>
-        </ng-container>
-      </th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr *ngFor="let row of config.serverSide ? data : filteredData">
-      <td *ngIf="config.selectable">
-        <input type="checkbox" [checked]="isSelected(row)" (change)="toggleRowSelection(row, $event)" />
-      </td>
-      <td *ngFor="let col of config.columns">
-        {{ row[col.key] }}
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <tbody>
+      <tr *ngFor="let row of config.serverSide ? data : filteredData">
+        <td *ngFor="let col of config.columns">
+          <input *ngIf="col.key === this.keySelectable" type="checkbox" [checked]="isSelected(row)" (change)="toggleRowSelection(row, $event)" />
+          <span *ngIf="col.key !== this.keySelectable">{{ row[col.key] }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <div class="pagination" *ngIf="meta">
   <button (click)="changePage(meta.page - 1)" [disabled]="meta.page === 1">Anterior</button>

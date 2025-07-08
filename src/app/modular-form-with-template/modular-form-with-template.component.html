@@ -1,4 +1,7 @@
 <form [formGroup]="form" class="modular-form-controls">
+  <p>Name only shown when age > 29</p>
+  <p>Name only required when age > 34</p>
+  <p>Name must be longer than 2 characters</p>
   <app-dynamic-form [form]="form" [rules]="client_rules" />
   <span>{{ this.form.getRawValue() | json }}</span>
 </form>

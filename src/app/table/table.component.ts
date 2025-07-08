@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PaginationMeta, TableConfig } from './table.config';
+import { PaginationMeta, RequestData, TableConfig } from './table.config';
 
 @Component({
   selector: 'app-table',
@@ -16,46 +16,57 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() data: any[] = [];
   @Input() config!: TableConfig;
   @Input() meta!: PaginationMeta;
-  @Output() requestData = new EventEmitter<{
-    page: number;
-    pageSize: number;
-    filters: any;
-    sort: { key: string; direction: 'asc' | 'desc' | '' };
-  }>();
+  @Output() requestData = new EventEmitter<RequestData>();
   @Output() selectionChange = new EventEmitter<any[]>();
-  selectedRows: Set<any> = new Set();
+  protected selectedRows: Set<any> = new Set();
 
-  filters: { [key: string]: FormControl } = {};
-  subscriptions: Subscription[] = [];
+  protected filters: { [key: string]: FormControl } = {};
+  protected subscriptions: Subscription[] = [];
 
-  page = 1;
-  sortKey = '';
-  sortDirection: 'asc' | 'desc' | '' = '';
+  protected page = 1;
+  protected sortKey = '';
+  protected sortDirection: 'asc' | 'desc' | '' = '';
 
-  filteredData: any[] = [];
+  protected filteredData: any[] = [];
+  protected keySelectable = 'selectable';
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.initFilters();
-    this.loadFiltersFromUrl();
+    this.addSelectableColumnIfItIs(); // Añade la columna de selección si está habilitada
+    this.initFilters(); // Inicializa filtros y suscripciones a cambios
+    this.loadFiltersFromUrl(); // Carga los filtros persistidos desde la URL
 
     if (this.config.serverSide) {
-      this.emitRequest();
+      this.emitRequest(); // En modo servidor, emite la primera petición de datos
     } else {
-      this.applyClientFilteringSortAndPagination();
+      this.applyClientFilteringSortAndPagination(); // En modo cliente, aplica filtros, orden y paginación
     }
   }
 
+  //Añade una columna al principio para checkboxes de selección si la tabla es seleccionable.
+  addSelectableColumnIfItIs(): void {
+    if (this.config.selectable) {
+      this.config.columns.unshift({
+        key: this.keySelectable,
+        label: 'Pick',
+        type: 'text',
+      });
+    }
+  }
+
+  //Elimina todas las suscripciones al destruirse el componente para evitar fugas de memoria.
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
+    //// Aplica filtrado/paginación si llegan nuevos datos y es modo cliente
     if (changes['data'] && !this.config?.serverSide) {
       this.applyClientFilteringSortAndPagination();
     }
 
+    //// Si hay selección por valores predefinidos, actualiza `selectedRows`
     if (changes['data'] && this.config?.selectable && typeof this.config.selectable === 'object') {
       const { key, selectedValues } = this.config.selectable;
       if (key && Array.isArray(selectedValues)) {
@@ -65,11 +76,13 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  initFilters() {
+  //Crea controles reactivos para los filtros y suscribe a sus cambios.
+  initFilters(): void {
     this.config.columns.forEach((col) => {
       if (col.filterable) {
         const control = new FormControl('');
         this.filters[col.key] = control;
+        // Suscribirse a cambios de valor en cada filtro
         this.subscriptions.push(
           control.valueChanges.subscribe(() => {
             this.meta.page = 1; // Resetea a primera página al cambiar filtro
@@ -79,7 +92,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
               this.applyClientFilteringSortAndPagination();
             }
             if (this.config.persistFilters) {
-              this.updateQueryParams();
+              this.updateQueryParams(); // Guarda filtros en URL
             }
           })
         );
@@ -87,23 +100,26 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  loadFiltersFromUrl() {
+  //Carga valores de filtros desde los parámetros de la URL, si está habilitada la persistencia.
+  loadFiltersFromUrl(): void {
     if (!this.config.persistFilters) return;
 
     this.route.queryParams.subscribe((params) => {
       for (const key of Object.keys(this.filters)) {
-        if (params[key]) {
-          this.filters[key].setValue(params[key], { emitEvent: false });
+        const namespacedKey = `${this.config.tableName}${key}`;
+        if (params[namespacedKey]) {
+          this.filters[key].setValue(params[namespacedKey], { emitEvent: false });
         }
       }
     });
   }
 
-  updateQueryParams() {
+  //Actualiza la URL con los filtros actuales para que puedan persistir entre navegaciones.
+  updateQueryParams(): void {
     const queryParams: any = {};
     for (const key in this.filters) {
       const val = this.filters[key].value;
-      if (val) queryParams[key] = val;
+      if (val) queryParams[`${this.config.tableName}${key}`] = val;
     }
     this.router.navigate([], {
       queryParams,
@@ -111,12 +127,13 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  applyClientFilteringSortAndPagination() {
+  //Aplica filtrado, ordenación y paginación en cliente, modificando filteredData.
+  applyClientFilteringSortAndPagination(): void {
     if (!this.meta) return;
 
     let filtered = [...this.data];
 
-    // Filtros
+    // Aplica filtros
     for (const key of Object.keys(this.filters)) {
       const val = this.filters[key].value;
       if (val) {
@@ -124,7 +141,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
 
-    // Ordenación
+    // Aplica ordenación
     if (this.sortKey) {
       filtered.sort((a, b) => {
         const valA = a[this.sortKey];
@@ -149,11 +166,13 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     if (this.meta.page > totalPages) this.meta.page = totalPages;
     if (this.meta.page < 1) this.meta.page = 1;
 
+    // Aplica paginación
     const start = (this.meta.page - 1) * this.meta.pageSize;
     this.filteredData = filtered.slice(start, start + this.meta.pageSize);
   }
 
-  emitRequest() {
+  //Emite un evento con la configuración actual de paginación, filtros y orden para pedir datos al servidor.
+  emitRequest(): void {
     this.requestData.emit({
       page: this.meta?.page || 1,
       pageSize: this.meta?.pageSize || 10,
@@ -162,8 +181,12 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  changeSort(key: string) {
-    if (this.sortKey !== key) {
+  //Cambia el criterio y dirección de ordenación al hacer clic en el encabezado de columna.
+  changeSort(key: string): void {
+    if (key === this.keySelectable) {
+      // No se ordena por columna de selección
+      return;
+    } else if (this.sortKey !== key || this.sortDirection === 'desc') {
       this.sortKey = key;
       this.sortDirection = 'asc';
     } else if (this.sortDirection === 'asc') {
@@ -179,6 +202,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  //Cambia de página si el número es válido, tanto en modo cliente como servidor.
   changePage(newPage: number) {
     if (!this.meta) return;
 
@@ -194,6 +218,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  //Añade o quita una fila seleccionada cuando el usuario marca/desmarca el checkbox. Emite el listado actualizado.
   toggleRowSelection(row: any, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
@@ -204,6 +229,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     this.selectionChange.emit(Array.from(this.selectedRows));
   }
 
+  //Verifica si una fila está actualmente seleccionada (checkbox activo).
   isSelected(row: any): boolean {
     return this.selectedRows.has(row);
   }
