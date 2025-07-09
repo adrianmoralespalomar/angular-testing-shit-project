@@ -1,9 +1,9 @@
 import { Validators } from '@angular/forms';
 import { InputNumberComponent } from 'src/app/form-controls/controls/input-number/input-number.component';
 import { InputTextComponent } from 'src/app/form-controls/controls/input-text/input-text.component';
-import { FieldRuleSet } from '../dynamic-form/config/rule-engine.types';
+import { FieldRuleSet } from '../../dynamic-form/config/rule-engine.types';
 
-export const CLIENT_FORM: FieldRuleSet = {
+export const NAME_REQUIRED_AGE_HIGH: FieldRuleSet = {
   edad: {
     initialValue: 30,
     label: 'Age',

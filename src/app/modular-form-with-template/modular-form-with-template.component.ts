@@ -1,27 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputTextComponent } from '../form-controls/controls/input-text/input-text.component';
-import { buildForm } from './dynamic-form/config/build-form';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
-import { CLIENT_FORM } from './forms/clients-form';
+import { Component } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommissionsComponent } from './test-forms/commissions/commissions.component';
+import { NameRequiredAgeHighComponent } from './test-forms/name-required-age-high/name-required-age-high.component';
 
 @Component({
   standalone: true,
   selector: 'app-modular-form-with-template',
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, InputTextComponent, DynamicFormComponent],
-  templateUrl: './modular-form-with-template.component.html',
-  styleUrls: ['./modular-form-with-template.component.css'],
+  imports: [NameRequiredAgeHighComponent, CommissionsComponent, MatExpansionModule],
+  template: `
+    <mat-accordion multi>
+      <mat-expansion-panel id="Name Required Age High">
+        <mat-expansion-panel-header><mat-panel-title> Name Required Age High </mat-panel-title></mat-expansion-panel-header>
+        <app-name-required-age-high />
+      </mat-expansion-panel>
+
+      <mat-expansion-panel id="Name Required Age High">
+        <mat-expansion-panel-header><mat-panel-title>Commissions</mat-panel-title></mat-expansion-panel-header>
+        <app-commissions />
+      </mat-expansion-panel>
+    </mat-accordion>
+  `,
 })
-export class ModularFormWithTemplateComponent {
-  private readonly formBuilder = inject(FormBuilder);
-  protected readonly client_rules = CLIENT_FORM;
-  form = buildForm(this.formBuilder, CLIENT_FORM);
-
-  // utilidades para la plantilla, si las necesitas
-  campoVisible(path: string) {
-    return !this.form.get(path)!.disabled;
-  }
-
-  isMandatoryField = (key: string) => this.form.get([key])?.errors?.['required'] ?? false;
-}
+export class ModularFormWithTemplateComponent {}

@@ -1,14 +1,44 @@
-form.dynamic-form {
+form.dynamic-form-wrapper {
   --gap-size: 1rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--gap-size);
   padding: 2rem;
-  background-color: var(--form-bg-color);
+  background-color: #f5f9fb;
   border-radius: 0.75rem;
-  .field-container {
-    flex: 1 1 calc(33.33% - var(--gap-size));
-    max-width: calc(33.33% - var(--gap-size));
+  span.title-form {
+    display: block;
+    color: #767676;
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: lighter;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    margin-bottom: var(--gap-size);
+  }
+
+  section.form-controls-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 var(--gap-size); /* sólo gap horizontal */
+    align-items: flex-start;
+    div.form-control {
+      box-sizing: border-box;
+      flex: 0 0 calc((100% - 2rem) / 3); /* 3 columnas */
+      max-width: calc((100% - 2rem) / 3);
+      margin-bottom: var(--gap-size);
+    }
+    .row-break {
+      flex-basis: 100%;
+      height: 0; /* No altura visible */
+      margin-top: calc(var(--gap-size) * -1);
+    }
+    /* Columnas que ocupan más de una */
+    .form-control.col-span-2 {
+      flex: 0 0 calc(((100% - 2 * var(--gap-size)) / 3) * 2 + var(--gap-size));
+      max-width: calc(((100% - 2 * var(--gap-size)) / 3) * 2 + var(--gap-size));
+    }
+    .form-control.col-span-3 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
   }
 }

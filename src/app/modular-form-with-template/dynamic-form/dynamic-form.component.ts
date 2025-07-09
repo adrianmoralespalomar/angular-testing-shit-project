@@ -17,11 +17,13 @@ import { FieldRuleSet } from './config/rule-engine.types';
   imports: [CommonModule, ReactiveFormsModule, CheckboxComponent, InputDateComponent, InputNumberComponent, InputTextComponent, RadioButtonComponent, TextareaComponent],
 })
 export class DynamicFormComponent implements OnInit {
+  @Input() title = '';
   @Input() form!: FormGroup;
   @Input() rules!: FieldRuleSet;
-  visibleFields: string[] = [];
+  visibleFields: any[] = [];
   InputNumberComponent = InputNumberComponent;
   InputTextComponent = InputTextComponent;
+  RadioButtonComponent = RadioButtonComponent;
 
   ngOnInit() {
     this.updateVisibleFields();
@@ -29,9 +31,26 @@ export class DynamicFormComponent implements OnInit {
   }
 
   updateVisibleFields() {
+    const values = this.form.getRawValue(); // Para evaluar showIf si existe
     this.visibleFields = Object.keys(this.rules).filter((field) => {
+      const rule = this.rules[field];
       const control = this.form.get(field);
-      return !!control && !control.disabled;
+      const shouldShow = rule.showIf ? rule.showIf(values) : true;
+      if (field === 'cascadeInfo') {
+        console.log(rule);
+        console.log(control);
+        console.log(shouldShow);
+      }
+      return shouldShow;
     });
+
+    console.log(this.visibleFields);
+  }
+
+  updateVisibleSubFields(subsectionKey: string, width: number) {
+    const index = Object.keys(this.rules).indexOf(subsectionKey);
+    const array = Object.keys({ ...this.rules }) as Array<string>;
+    const subsection = array.slice(index, index + width);
+    return subsection;
   }
 }

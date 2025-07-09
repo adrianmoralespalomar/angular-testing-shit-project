@@ -6,6 +6,7 @@ div.input-wrapper {
   gap: 0.25rem;
   label {
     font-size: var(--form-control-font-size);
+    line-height: 1.5rem;
   }
   input:not([type="checkbox"]),
   textarea,
