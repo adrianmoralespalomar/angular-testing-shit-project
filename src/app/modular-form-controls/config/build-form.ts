@@ -67,6 +67,19 @@ export function patchFormWithApiData(form: FormGroup<any>, openApiData: any, rul
   });
 }
 
+//Hace q si enviamos ciudad.provincia.nombre, se nos devuelva un string "ciudad.provincia.nombre" q luego la usaremos en la funcion patchFormWithApiData
+export function getPropertyPath<T>(accessor: (obj: T) => any): string {
+  const fnStr = accessor.toString();
+
+  // Extrae el acceso después del primer punto (acepta ?. o .)
+  const match = fnStr.match(/return\s+[\w\d_]+(?:\?|)\.(.*);?}/) || fnStr.match(/=>\s*[\w\d_]+(?:\?|)\.(.*)/);
+
+  if (!match || !match[1]) return '';
+
+  // Elimina todos los ?. para dejar una ruta limpia
+  return match[1].replace(/\?\./g, '.');
+}
+
 // export function patchFormWithApiData(form: FormGroup<any>, openApiData: any, rules: FieldRuleSet) {
 //   if (openApiData === undefined) return;
 //   Object.entries(rules).forEach(([key, rule]) => {

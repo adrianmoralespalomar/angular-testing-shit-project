@@ -3,7 +3,9 @@ import { InputNumberComponent } from 'src/app/form-controls/controls/input-numbe
 import { InputTextComponent } from 'src/app/form-controls/controls/input-text/input-text.component';
 import { RadioButtonComponent } from 'src/app/form-controls/controls/radio-button/radio-button.component';
 import { maxDecimalsValidator } from 'src/app/form-controls/form-controls.component';
+import { getPropertyPath } from 'src/app/modular-form-with-template/dynamic-form/config/build-form';
 import { FieldRuleSet } from 'src/app/modular-form-with-template/dynamic-form/config/rule-engine.types';
+import { Commission } from '../../api/models/commission';
 import { ObtainingAmountType } from '../../api/models/obtaining-amount-type';
 import { ReferenceCaptureDateType } from '../../api/models/reference-capture-date-type';
 
@@ -45,14 +47,16 @@ export const REFERENTIAL_CAPTURE_DATE_OPTIONS = [
 
 export const CALC_AMOUNT_OBJETIVES_FORM: FieldRuleSet = {
   [CALC_AMOUNT_OBJETIVES_FORM_KEYS.obtainingAmount]: {
-    openapiProp: 'targetAmount.obtainingAmount',
+    //openapiProp: 'targetAmount.obtainingAmount',
+    openapiProp: getPropertyPath<Commission>((x) => x.targetAmount?.obtainingAmount), //Esto es util si queremos tiparlo
     label: 'Obtencion del importe',
     validators: [Validators.required],
     component: RadioButtonComponent,
     options: OBTAINING_AMOUNT_OPTIONS,
   },
   [CALC_AMOUNT_OBJETIVES_FORM_KEYS.fixedAmount]: {
-    openapiProp: 'targetAmount.fixedAmount',
+    //openapiProp: 'targetAmount.fixedAmount',
+    openapiProp: getPropertyPath<Commission>((x) => x.targetAmount?.fixedAmount), //Esto es util si queremos tiparlo
     label: 'Importe',
     validators: [Validators.required, maxDecimalsValidator(2)],
     showIf: (values) => values[CALC_AMOUNT_OBJETIVES_FORM_KEYS.obtainingAmount] === OBTAINING_AMOUNT_FIXED_AMOUNT_VALUE,
@@ -60,7 +64,8 @@ export const CALC_AMOUNT_OBJETIVES_FORM: FieldRuleSet = {
     startOnNewRow: true,
   },
   [CALC_AMOUNT_OBJETIVES_FORM_KEYS.fundField]: {
-    openapiProp: 'targetAmount.fundFieldValue',
+    //openapiProp: 'targetAmount.fundFieldValue',
+    openapiProp: getPropertyPath<Commission>((x) => x.targetAmount?.fundFieldValue), //Esto es util si queremos tiparlo
     label: 'Campo del fondo',
     validators: [Validators.required],
     showIf: (values) => values[CALC_AMOUNT_OBJETIVES_FORM_KEYS.obtainingAmount] === OBTAINING_AMOUNT_FUND_FIELD_VALUE,
@@ -68,7 +73,8 @@ export const CALC_AMOUNT_OBJETIVES_FORM: FieldRuleSet = {
     startOnNewRow: true,
   },
   [CALC_AMOUNT_OBJETIVES_FORM_KEYS.rateApplies]: {
-    openapiProp: 'targetAmount.fundFieldValue',
+    //openapiProp: 'targetAmount.rateApplies',
+    openapiProp: getPropertyPath<Commission>((x) => x.targetAmount?.rateApplies), //Esto es util si queremos tiparlo
     label: 'Sobre el importe anterior Se aplica tasa?',
     validators: [Validators.required],
     showIf: (values) => values[CALC_AMOUNT_OBJETIVES_FORM_KEYS.obtainingAmount] === OBTAINING_AMOUNT_FUND_FIELD_VALUE,
@@ -80,7 +86,8 @@ export const CALC_AMOUNT_OBJETIVES_FORM: FieldRuleSet = {
     startOnNewRow: true,
   },
   [CALC_AMOUNT_OBJETIVES_FORM_KEYS.rateType]: {
-    openapiProp: 'targetAmount.rateType',
+    //openapiProp: 'targetAmount.rateType',
+    openapiProp: getPropertyPath<Commission>((x) => x.targetAmount?.rateType), //Esto es util si queremos tiparlo
     label: 'Tipo Tasa',
     validators: [Validators.required],
     showIf: (values) => values[CALC_AMOUNT_OBJETIVES_FORM_KEYS.rateApplies] === true,
