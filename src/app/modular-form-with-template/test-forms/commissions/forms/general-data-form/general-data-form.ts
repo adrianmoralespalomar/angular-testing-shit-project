@@ -42,26 +42,49 @@ export const GENERAL_DATA_FORM: FieldRuleSet = {
     ],
   },
   cascadeInfo: {
-    label: 'CASCADA INFO',
-    subsectionwidth: 3,
+    subsection: {
+      ordenDeLaCascadaFaltaBackWaterfall: {
+        openapiProp: 'modifiedOrder',
+        label: 'Orden de la cascada',
+        startOnNewRow: true,
+        component: InputTextComponent,
+        disabledIf: (values) => true,
+      },
+      cascadaAoBFaltaBackWaterfall: {
+        openapiProp: 'cascadeIndex',
+        label: 'Cascada A o B',
+        component: InputTextComponent,
+        disabledIf: (values) => true,
+      },
+      pagaBancoSNFaltaBackWaterfall: {
+        openapiProp: 'bankPays',
+        label: 'Paga Banco (S/N)',
+        component: InputTextComponent,
+        disabledIf: (values) => true,
+      },
+    },
   },
-  ordenDeLaCascadaFaltaBackWaterfall: {
-    openapiProp: 'modifiedOrder',
-    label: 'Orden de la cascada',
-    startOnNewRow: true,
-    component: InputTextComponent,
-    disabledIf: (values) => true,
-  },
-  cascadaAoBFaltaBackWaterfall: {
-    openapiProp: 'cascadeIndex',
-    label: 'Cascada A o B',
-    component: InputTextComponent,
-    disabledIf: (values) => true,
-  },
-  pagaBancoSNFaltaBackWaterfall: {
-    openapiProp: 'bankPays',
-    label: 'Paga Banco (S/N)',
-    component: InputTextComponent,
-    disabledIf: (values) => true,
-  },
+  // cascadeInfo: {
+  //   label: 'CASCADA INFO',
+  //   subsectionwidth: 3,
+  // },
+  // ordenDeLaCascadaFaltaBackWaterfall: {
+  //   openapiProp: 'modifiedOrder',
+  //   label: 'Orden de la cascada',
+  //   startOnNewRow: true,
+  //   component: InputTextComponent,
+  //   disabledIf: (values) => true,
+  // },
+  // cascadaAoBFaltaBackWaterfall: {
+  //   openapiProp: 'cascadeIndex',
+  //   label: 'Cascada A o B',
+  //   component: InputTextComponent,
+  //   disabledIf: (values) => true,
+  // },
+  // pagaBancoSNFaltaBackWaterfall: {
+  //   openapiProp: 'bankPays',
+  //   label: 'Paga Banco (S/N)',
+  //   component: InputTextComponent,
+  //   disabledIf: (values) => true,
+  // },
 };
