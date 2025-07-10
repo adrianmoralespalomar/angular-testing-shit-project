@@ -7,18 +7,18 @@ import { getErrorMessage, getMaxDecimals, getMaxvalue, getMinvalue } from '../sh
 @Component({
   selector: 'app-input-number',
   standalone: true,
-  imports: [ ReactiveFormsModule,NgIf, NgClass,NgxMaskDirective],
+  imports: [ReactiveFormsModule, NgIf, NgClass, NgxMaskDirective],
   providers: [provideNgxMask()],
   templateUrl: './input-number.component.html',
-  styleUrls: ['../input.css']
+  styleUrls: ['../input.css'],
 })
 export class InputNumberComponent implements ControlValueAccessor {
   @Input() label?: string;
   @Input() placeholder: string = '';
   @Input() maxdecimals?: number;
-  @Input() typeNumber : 'amount' | 'percentage' = 'amount';
-  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrec 
- 
+  @Input() typeNumber: 'amount' | 'percentage' = 'amount';
+  @Input() allowTypeInvalidValue = false; //Esto es para que el formcontrol permita escribir valores incorrectos y entonces mostrar el mensaje de error. Si es "true", entonces evitamos q el usuario pueda escribir valores incorrec
+
   // ✅ Inputs para uso fuera del formulario
   @Input() externalValue: number | null = null;
   @Input() isReadonly: boolean = false;
@@ -37,9 +37,11 @@ export class InputNumberComponent implements ControlValueAccessor {
       ngControl.valueAccessor = this;
     }
     //Set Initial Value for ngxMaskControl
-    setTimeout(()=>{
-      this.ngxMaskControl.setValue(Number(this.isFormBound ? this.value : this.externalValue));
-      if(this.isDisabled || this.externalDisabled){
+    setTimeout(() => {
+      //If its null or undefined, we dont cast Number()
+      const value = this.isFormBound ? this.value : this.externalValue;
+      this.ngxMaskControl.setValue(!!value ? Number(value) : value);
+      if (this.isDisabled || this.externalDisabled) {
         this.ngxMaskControl.disable();
         this.ngxMaskControl.updateValueAndValidity();
       }
@@ -49,7 +51,7 @@ export class InputNumberComponent implements ControlValueAccessor {
   get isFormBound(): boolean {
     return !!this.ngControl?.control;
   }
-  
+
   get control() {
     return this.ngControl?.control;
   }
@@ -62,19 +64,19 @@ export class InputNumberComponent implements ControlValueAccessor {
     return this.control?.disabled ?? false;
   }
 
-  get showError(): boolean | undefined{
-    return this.control?.invalid && (this.control.touched || this.control.dirty) || false;
+  get showError(): boolean | undefined {
+    return (this.control?.invalid && (this.control.touched || this.control.dirty)) || false;
   }
 
-  getMaxvalue(): number | undefined{
+  getMaxvalue(): number | undefined {
     return getMaxvalue(this.control);
   }
 
-  getMinvalue(): number | undefined{
+  getMinvalue(): number | undefined {
     return getMinvalue(this.control);
   }
 
-  getMaxDecimals(): number | undefined{
+  getMaxDecimals(): number | undefined {
     return getMaxDecimals(this.control, this.maxdecimals);
   }
 
@@ -104,5 +106,4 @@ export class InputNumberComponent implements ControlValueAccessor {
     this.onChange(this.value);
     this.externalValue = this.value;
   }
-  
 }

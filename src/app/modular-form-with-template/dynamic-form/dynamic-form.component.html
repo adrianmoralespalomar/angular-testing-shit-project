@@ -14,28 +14,30 @@
           <app-input-number *ngSwitchCase="InputNumberComponent" [formControlName]="field" [label]="rules[field].label" />
           <app-input-text *ngSwitchCase="InputTextComponent" [formControlName]="field" [label]="rules[field].label" />
           <app-radio-button *ngSwitchCase="RadioButtonComponent" [formControlName]="field" [label]="rules[field].label" [options]="rules[field].options ?? []" [orientation]="rules[field].orientation ?? 'horizontal'" />
-          <div *ngSwitchDefault style="color: red; font-style: italic">⚠️ Componente no definido para este campo</div>
+          <!-- <div *ngSwitchDefault style="color: red; font-style: italic">⚠️ Componente no definido para este campo</div> -->
         </ng-container>
       </div>
 
-      <div *ngIf="rules[field].subsectionwidth" class="form-control col-span-3">
-        <span class="title-form">{{ rules[field].label }}</span>
-        <ng-container *ngFor="let subfield of updateVisibleSubFields(field, rules[field].subsectionwidth ?? -1); let ia = index">
-          <div
-            class="form-control"
-            [ngClass]="{
-              'col-span-2': rules[subfield].columnSpan === 2,
-              'col-span-3': rules[subfield].columnSpan === 3
-            }">
-            <ng-container [ngSwitch]="rules[subfield].component">
-              <app-input-number *ngSwitchCase="InputNumberComponent" [formControlName]="subfield" [label]="rules[subfield].label" />
-              <app-input-text *ngSwitchCase="InputTextComponent" [formControlName]="subfield" [label]="rules[subfield].label" />
-              <app-radio-button *ngSwitchCase="RadioButtonComponent" [formControlName]="subfield" [label]="rules[subfield].label" [options]="rules[subfield].options ?? []" [orientation]="rules[subfield].orientation ?? 'horizontal'" />
-              <div *ngSwitchDefault style="color: red; font-style: italic">⚠️ Componente no definido para este campo</div>
-            </ng-container>
-          </div>
-        </ng-container>
-      </div>
+      <!--SUBSECTIONS-->
+      <section *ngIf="rules[field].subsection as subsection" class="subsection-form-control">
+        <span class="title-form subsection-title">{{ rules[field].label }}</span>
+        <section class="form-controls-container">
+          <ng-container *ngFor="let subfield of updateVisibleSubFields(field); let ia = index">
+            <div
+              class="form-control"
+              [ngClass]="{
+                'col-span-2': subsection[subfield].columnSpan === 2,
+                'col-span-3': subsection[subfield].columnSpan === 3
+              }">
+              <ng-container [ngSwitch]="subsection[subfield].component">
+                <app-input-number *ngSwitchCase="InputNumberComponent" [formControlName]="subfield" [label]="subsection[subfield].label" />
+                <app-input-text *ngSwitchCase="InputTextComponent" [formControlName]="subfield" [label]="subsection[subfield].label" />
+                <app-radio-button *ngSwitchCase="RadioButtonComponent" [formControlName]="subfield" [label]="subsection[subfield].label" [options]="subsection[subfield].options ?? []" [orientation]="subsection[subfield].orientation ?? 'horizontal'" />
+              </ng-container>
+            </div>
+          </ng-container>
+        </section>
+      </section>
     </ng-container>
   </section>
 </form>

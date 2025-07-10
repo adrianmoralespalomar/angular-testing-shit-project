@@ -48,6 +48,7 @@ export interface FieldRule {
   component?: FieldComponentType;
   options?: RadioButtonOptions[];
   orientation?: 'horizontal' | 'vertical';
+  subsection?: FieldRuleSet;
 }
 
 export type FieldRuleSet = Record<string, FieldRule>;

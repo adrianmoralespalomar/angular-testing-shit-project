@@ -90,7 +90,7 @@ export class FormControlsComponent implements OnInit {
 
   setInitialFormNumber() {
     this.formNumber = this._formBuilder.group<FormNumber>({
-      number: this._formBuilder.control(3),
+      number: this._formBuilder.control(null),
       numberMax: this._formBuilder.nonNullable.control(2, [Validators.required, Validators.max(120)]),
       numberMin: this._formBuilder.nonNullable.control(1, [Validators.required, Validators.min(10)]),
       numberWith2Decimals: this._formBuilder.nonNullable.control(12.23, [Validators.required, Validators.min(10)]),

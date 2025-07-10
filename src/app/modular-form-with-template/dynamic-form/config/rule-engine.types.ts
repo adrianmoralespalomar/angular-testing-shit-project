@@ -48,16 +48,9 @@ export interface FieldRule {
   component?: FieldComponentType;
   options?: RadioButtonOptions[];
   orientation?: 'horizontal' | 'vertical';
-  subsectionwidth?: number;
   subsection?: FieldRuleSet;
 }
 
 export type FieldRuleSet = Record<string, FieldRule>;
 
-export type FieldComponentType =
-  | Type<CheckboxComponent>
-  | Type<InputDateComponent>
-  | Type<InputNumberComponent>
-  | Type<InputTextComponent> // botón custom
-  | Type<RadioButtonComponent>
-  | Type<TextareaComponent>;
+export type FieldComponentType = Type<CheckboxComponent> | Type<InputDateComponent> | Type<InputNumberComponent> | Type<InputTextComponent> | Type<RadioButtonComponent> | Type<TextareaComponent>;

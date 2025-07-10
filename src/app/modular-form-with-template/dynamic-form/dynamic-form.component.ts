@@ -36,21 +36,21 @@ export class DynamicFormComponent implements OnInit {
       const rule = this.rules[field];
       const control = this.form.get(field);
       const shouldShow = rule.showIf ? rule.showIf(values) : true;
-      if (field === 'cascadeInfo') {
-        console.log(rule);
-        console.log(control);
-        console.log(shouldShow);
-      }
       return shouldShow;
     });
-
-    console.log(this.visibleFields);
   }
 
-  updateVisibleSubFields(subsectionKey: string, width: number) {
-    const index = Object.keys(this.rules).indexOf(subsectionKey);
-    const array = Object.keys({ ...this.rules }) as Array<string>;
-    const subsection = array.slice(index, index + width);
-    return subsection;
+  updateVisibleSubFields(subsectionKey: string) {
+    const subsection = this.rules[subsectionKey].subsection;
+    if (subsection === undefined) return;
+
+    const values = this.form.getRawValue();
+    const visibleSubFields = Object.keys(subsection).filter((field) => {
+      const rule = subsection[field];
+      const control = this.form.get(field);
+      const shouldShow = rule.showIf ? rule.showIf(values) : true;
+      return shouldShow;
+    });
+    return visibleSubFields;
   }
 }

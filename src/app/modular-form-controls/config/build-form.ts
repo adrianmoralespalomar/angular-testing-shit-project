@@ -49,3 +49,37 @@ function applyRules(form: FormGroup, rules: FieldRuleSet): void {
     control.updateValueAndValidity({ emitEvent: false });
   });
 }
+
+export function patchFormWithApiData(form: FormGroup<any>, openApiData: any, rules: FieldRuleSet) {
+  if (openApiData === undefined) return;
+  Object.entries(rules).forEach(([key, rule]) => {
+    if (rule.subsection) {
+      Object.entries(rule.subsection).forEach(([subkey, subrule]) => {
+        if (!subrule.openapiProp) return;
+        const openapiValue = subrule.openapiProp?.split('.').reduce((acc: any, key) => acc && acc[key], openApiData); //To get nested value
+        form.get(subkey)?.patchValue(openapiValue);
+      });
+    } else {
+      if (!rule.openapiProp) return;
+      const openapiValue = rule.openapiProp?.split('.').reduce((acc: any, key) => acc && acc[key], openApiData); //To get nested value
+      form.get(key)?.patchValue(openapiValue);
+    }
+  });
+}
+
+// export function patchFormWithApiData(form: FormGroup<any>, openApiData: any, rules: FieldRuleSet) {
+//   if (openApiData === undefined) return;
+//   Object.entries(rules).forEach(([key, rule]) => {
+//     if (rule.subsection) {
+//       Object.entries(rule.subsection).forEach(([subkey, subrule]) => {
+//         if (!subrule.openapiProp) return;
+//         const openapi = subrule.openapiProp as keyof typeof openApiData;
+//         form.get(subkey)?.patchValue(openApiData?.[openapi]);
+//       });
+//     } else {
+//       if (!rule.openapiProp) return;
+//       const openapi = rule.openapiProp as keyof typeof openApiData;
+//       form.get(key)?.patchValue(openApiData?.[openapi]);
+//     }
+//   });
+// }

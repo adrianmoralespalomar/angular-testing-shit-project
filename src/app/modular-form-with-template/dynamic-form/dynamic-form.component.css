@@ -1,8 +1,11 @@
+@import url("../../form-controls/controls/global-controls-styles.css");
+
 form.dynamic-form-wrapper {
   --gap-size: 1rem;
+  --border-radius: 0.75rem;
   padding: 2rem;
   background-color: #f5f9fb;
-  border-radius: 0.75rem;
+  border-radius: var(--border-radius);
   span.title-form {
     display: block;
     color: #767676;
@@ -12,6 +15,10 @@ form.dynamic-form-wrapper {
     line-height: 1.5rem;
     text-transform: uppercase;
     margin-bottom: var(--gap-size);
+    &.subsection-title {
+      color: #23779a;
+      font-weight: 700;
+    }
   }
 
   section.form-controls-container {
@@ -39,6 +46,13 @@ form.dynamic-form-wrapper {
     .form-control.col-span-3 {
       flex: 0 0 100%;
       max-width: 100%;
+    }
+    section.subsection-form-control {
+      flex: auto;
+      padding: 1rem;
+      border: solid var(--form-control-border-width) var(--form-control-border-color);
+      border-radius: var(--border-radius);
+      background-color: #f0f0f0;
     }
   }
 }

@@ -4,27 +4,27 @@ import { FormBuilder, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsM
 import { buildForm, patchFormWithApiData } from 'src/app/modular-form-with-template/dynamic-form/config/build-form';
 import { DynamicFormComponent } from 'src/app/modular-form-with-template/dynamic-form/dynamic-form.component';
 import { Commission } from '../../api/models/commission';
-import { GENERAL_DATA_FORM } from './general-data-form';
+import { CALC_AMOUNT_OBJETIVES_FORM } from './calculation-amount-objetive-form';
 
 @Component({
-  selector: 'app-general-data-form',
+  selector: 'app-calculation-amount-objetive',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, DynamicFormComponent],
   template: `
-    <form [formGroup]="form" class="name-required-age-high" *ngIf="form">
-      <app-dynamic-form [form]="form" [rules]="client_rules" [title]="'Datos Generales'" />
+    <form [formGroup]="form" *ngIf="form">
+      <app-dynamic-form [form]="form" [rules]="calc_amount_rules" [title]="'Calculo del Importe Objetivo'" />
     </form>
   `,
 })
-export class GeneralDataFormComponent implements OnInit, OnChanges {
+export class CalculationAmountObjetiveComponent implements OnInit, OnChanges {
   @Input() commissionToEdit: Commission | undefined;
   private readonly formBuilder = inject(FormBuilder);
   private readonly formGroupDirective = inject(FormGroupDirective);
-  protected readonly client_rules = GENERAL_DATA_FORM;
+  protected readonly calc_amount_rules = CALC_AMOUNT_OBJETIVES_FORM;
   protected form!: FormGroup;
 
   ngOnInit() {
-    this.form = buildForm(this.formBuilder, GENERAL_DATA_FORM, 'generaldata', this.formGroupDirective);
+    this.form = buildForm(this.formBuilder, CALC_AMOUNT_OBJETIVES_FORM, 'calcAmountObjective', this.formGroupDirective);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,7 +34,7 @@ export class GeneralDataFormComponent implements OnInit, OnChanges {
   }
 
   patchForm(): void {
-    patchFormWithApiData(this.form, this.commissionToEdit, GENERAL_DATA_FORM);
+    patchFormWithApiData(this.form, this.commissionToEdit, CALC_AMOUNT_OBJETIVES_FORM);
   }
 
   // utilidades para la plantilla, si las necesitas
